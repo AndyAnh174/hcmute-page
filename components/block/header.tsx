@@ -156,6 +156,8 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const languageDropdownRef = useRef<HTMLDivElement | null>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -164,8 +166,21 @@ export default function Header() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Close language dropdown on outside click
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        languageDropdownRef.current &&
+        !languageDropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsLanguageOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
       // Cleanup timeout on unmount
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
@@ -221,7 +236,7 @@ export default function Header() {
         </Link>
         {hoveredMenu === item.label && (
           <div 
-            className="fixed top-[100px] left-0 right-0 bg-white shadow-lg border-b border-gray-200 py-12 px-24 z-50 fade-in pointer-events-auto"
+            className="fixed top-16 left-0 right-0 bg-white shadow-lg border-b border-gray-200 py-12 px-24 z-50 fade-in pointer-events-auto"
             onMouseEnter={() => {
               // Clear timeout when entering dropdown
               if (hoverTimeoutRef.current) {
@@ -274,7 +289,7 @@ export default function Header() {
       {/* Overlay backdrop when menu is open - mờ màn hình phía dưới */}
       {showOverlay && hoveredMenu && (
         <div 
-          className="fixed inset-0 top-[100px] bg-black/20 backdrop-blur-md z-40 fade-in"
+          className="fixed inset-0 top-16 bg-black/20 backdrop-blur-md z-40 fade-in"
           onMouseEnter={() => {
             setHoveredMenu(null);
             setShowOverlay(false);
@@ -282,30 +297,10 @@ export default function Header() {
         />
       )}
       
-      {/* Top Bar - Thông tin liên hệ */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-blue-900 text-white text-sm" data-top-bar>
-        <div className="max-w-[1920px] mx-auto px-6">
-          <div className="flex items-center justify-between h-9">
-            <div className="hidden md:flex items-center space-x-6">
-              <span className="hover:text-blue-200 transition-colors cursor-pointer">
-                📧 info@hcmute.edu.vn
-              </span>
-              <span className="hover:text-blue-200 transition-colors cursor-pointer">
-                📞 (028) 3896 6798
-              </span>
-            </div>
-            <div className="flex items-center space-x-4 text-xs">
-              <select className="bg-transparent border-none text-white hover:text-blue-200 transition-colors cursor-pointer focus:outline-none text-xs">
-                <option value="VN" className="bg-blue-900">VN</option>
-                <option value="EN" className="bg-blue-900">EN</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Main Navigation Bar */}
-      <nav className="fixed top-9 left-0 right-0 z-50 bg-white shadow-md border-b border-gray-200">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 backdrop-blur-md shadow-md border-b border-gray-200">
         <div className="max-w-[1920px] mx-auto px-6">
           <div className="flex items-center justify-between h-16 relative">
             {/* Left Navigation */}
@@ -335,10 +330,53 @@ export default function Header() {
               ))}
               
               {/* Search and Language */}
-              <div className="flex items-center space-x-4 ml-4">
+              <div className="flex items-center space-x-2 ml-4">
                 <button className="text-gray-700 hover:text-blue-700 transition-colors p-2 hover:bg-blue-50 rounded-full">
                   <Search size={20} />
                 </button>
+
+                {/* Language dropdown */}
+                <div className="relative" ref={languageDropdownRef}>
+                  <button
+                    className="flex items-center space-x-1 text-gray-700 hover:text-blue-700 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
+                    onClick={() => setIsLanguageOpen((v) => !v)}
+                    aria-haspopup="menu"
+                    aria-expanded={isLanguageOpen}
+                  >
+                    <img
+                      src="https://flagcdn.com/w20/vn.png"
+                      alt="Vietnam flag"
+                      width={20}
+                      height={14}
+                      className="inline-block rounded-sm"
+                    />
+                    <span className="text-xs font-medium">VN</span>
+                  </button>
+                  {isLanguageOpen && (
+                    <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center space-x-2">
+                        <img
+                          src="https://flagcdn.com/w20/vn.png"
+                          alt="Vietnam flag"
+                          width={20}
+                          height={14}
+                          className="inline-block rounded-sm"
+                        />
+                        <span>VN</span>
+                      </button>
+                      <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center space-x-2">
+                        <img
+                          src="https://flagcdn.com/w20/gb.png"
+                          alt="United Kingdom flag"
+                          width={20}
+                          height={14}
+                          className="inline-block rounded-sm"
+                        />
+                        <span>EN</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -352,6 +390,7 @@ export default function Header() {
               </button>
             </div>
           </div>
+
         </div>
       </nav>
 
