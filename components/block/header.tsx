@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Menu, Globe, X } from "lucide-react";
+import { Menu, Globe, X, MapPin, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 
 const LOGO_SRC = "/logo/square_logo.png";
-const DEFAULT_FEATURE_IMAGE = "/assets/news/hoi-thao-ute.jpg";
+const DEFAULT_FEATURE_IMAGE = "/news/hoi-thao-ute.jpg";
 
 type DropdownColumn = {
   title: string;
@@ -320,6 +321,7 @@ type FeatureContent = {
 
 const FEATURE_CONTENT: Record<string, FeatureContent> = {
   "Về HCMUTE": {
+    image: "/carousel/1.jpg",
     badge: "Khám phá HCMUTE",
     title: "Hành trình hơn 60 năm phát triển",
     description:
@@ -328,6 +330,7 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
     cta: "Khám phá câu chuyện",
   },
   "Sinh viên": {
+    image: "/carousel/2.jpg",
     badge: "Đời sống sinh viên",
     title: "Cộng đồng năng động, sáng tạo",
     description:
@@ -336,6 +339,7 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
     cta: "Xem hoạt động nổi bật",
   },
   "CBVC": {
+    image: "/news/Hinh khoi nghiep 11.jpg",
     badge: "Đồng hành cùng CBVC",
     title: "Môi trường làm việc chuyên nghiệp",
     description:
@@ -344,6 +348,7 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
     cta: "Xem chương trình hỗ trợ",
   },
   "Nghiên cứu": {
+    image: "/news/giai-nha-robot.jpeg",
     badge: "Nghiên cứu khoa học",
     title: "Các đề tài nổi bật tại HCMUTE",
     description:
@@ -352,6 +357,7 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
     cta: "Khám phá dự án",
   },
   "Hợp tác": {
+    image: "/carousel/3.jpg",
     badge: "Kết nối doanh nghiệp",
     title: "Hệ sinh thái đối tác toàn cầu",
     description:
@@ -360,6 +366,7 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
     cta: "Xem mạng lưới đối tác",
   },
   "Tuyển sinh": {
+    image: "/news/hoi-thao-ute.jpg",
     badge: "Tuyển sinh 2025",
     title: "Đồng hành cùng bạn vào HCMUTE",
     description:
@@ -369,13 +376,92 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
   },
 };
 
+type AreaItem = {
+  name: string;
+  description: string;
+  href: string;
+  initials?: string;
+};
+
+type AreaGroup = {
+  title: string;
+  items: AreaItem[];
+};
+
+const AREA_GROUPS: AreaGroup[] = [
+  {
+    title: "Khối khoa",
+    items: [
+      {
+        name: "Khoa Điện - Điện tử",
+        description: "Đào tạo kỹ sư điện, điện tử, viễn thông và tự động hóa.",
+        href: "/khoa/dien-dien-tu",
+        initials: "DEE",
+      },
+      {
+        name: "Khoa Cơ khí Chế tạo",
+        description: "Trọng tâm vào cơ khí, chế tạo máy và công nghệ vật liệu.",
+        href: "/khoa/co-khi",
+        initials: "ME",
+      },
+      {
+        name: "Khoa Công nghệ Thông tin",
+        description: "Các ngành CNTT, khoa học dữ liệu, trí tuệ nhân tạo.",
+        href: "/khoa/cong-nghe-thong-tin",
+        initials: "IT",
+      },
+      {
+        name: "Khoa Kinh tế",
+        description: "Quản lý công nghiệp, kinh tế, logistics và quản trị.",
+        href: "/khoa/kinh-te",
+        initials: "ECO",
+      },
+    ],
+  },
+  {
+    title: "Phòng ban & trung tâm",
+    items: [
+      {
+        name: "Phòng Đào tạo",
+        description: "Quản lý chương trình đào tạo, lịch học và hồ sơ học vụ.",
+        href: "/phong/dao-tao",
+        initials: "ACA",
+      },
+      {
+        name: "Phòng Công tác sinh viên",
+        description: "Hỗ trợ sinh viên, hoạt động đoàn thể và học bổng.",
+        href: "/phong/cong-tac-sinh-vien",
+        initials: "SV",
+      },
+      {
+        name: "Trung tâm Thông tin & Truyền thông",
+        description: "Truyền thông, quảng bá hình ảnh và hạ tầng số của trường.",
+        href: "/trung-tam/thong-tin-truyen-thong",
+        initials: "ICT",
+      },
+      {
+        name: "Trung tâm Hợp tác Doanh nghiệp",
+        description: "Kết nối doanh nghiệp, thực tập và giới thiệu việc làm.",
+        href: "/trung-tam/hop-tac-doanh-nghiep",
+        initials: "CEC",
+      },
+    ],
+  },
+];
+
 export default function Header() {
+  const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [isAreaOpen, setIsAreaOpen] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigationWrapperRef = useRef<HTMLDivElement | null>(null);
   const languageRef = useRef<HTMLDivElement | null>(null);
+  const areaRef = useRef<HTMLDivElement | null>(null);
   const dropdownPanelRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const allDesktopItems = useMemo(
     () => [...NAVIGATION.left, ...NAVIGATION.right],
@@ -391,6 +477,46 @@ export default function Header() {
         : null,
     [allDesktopItems, openDropdown]
   );
+
+  // Check if a path is active
+  const isActivePath = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
+
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Cmd/Ctrl + K to open search
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+        event.preventDefault();
+        setIsSearchOpen(true);
+        setTimeout(() => searchInputRef.current?.focus(), 100);
+      }
+      // Escape to close modals
+      if (event.key === "Escape") {
+        setIsSearchOpen(false);
+        setOpenDropdown(null);
+        setIsAreaOpen(false);
+        setIsLanguageOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -414,6 +540,13 @@ export default function Header() {
       ) {
         setIsLanguageOpen(false);
       }
+
+      if (
+        areaRef.current &&
+        !areaRef.current.contains(targetNode)
+      ) {
+        setIsAreaOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -421,19 +554,45 @@ export default function Header() {
   }, []);
 
   const handleToggleDropdown = (label: string) => {
+    setIsAreaOpen(false);
+    setIsLanguageOpen(false);
     setOpenDropdown((current) => (current === label ? null : label));
   };
 
+  const renderAreaInitials = (item: AreaItem) => {
+    if (item.initials) {
+      return item.initials;
+    }
+
+    return item.name
+      .split(/\s+/)
+      .map((part) => part[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+  };
+
   const renderDesktopItem = (item: NavItem) => {
+    const isActive = isActivePath(item.href);
+    
     if (!item.dropdown) {
       return (
         <Link
           key={item.label}
           href={item.href}
-          className="group relative inline-flex items-center text-sm font-medium text-gray-800 transition-colors duration-200 hover:text-blue-700"
+          className={`group relative inline-flex items-center whitespace-nowrap text-sm font-medium transition-colors duration-200 ${
+            isActive
+              ? "text-blue-700"
+              : "text-gray-800 hover:text-blue-700"
+          }`}
         >
           {item.label}
-          <span className="pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left scale-x-0 rounded bg-blue-700 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          <span
+            className={`pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left rounded bg-blue-700 transition-transform duration-200 ease-out ${
+              isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+            }`}
+          />
         </Link>
       );
     }
@@ -447,10 +606,20 @@ export default function Header() {
           onClick={() => handleToggleDropdown(item.label)}
           aria-expanded={isOpen}
           aria-haspopup="menu"
-          className="group relative inline-flex items-center text-sm font-medium text-gray-800 transition-colors duration-200 hover:text-blue-700 focus:outline-none"
+          className={`group relative inline-flex items-center whitespace-nowrap text-sm font-medium transition-colors duration-200 focus:outline-none ${
+            isActive || isOpen
+              ? "text-blue-700"
+              : "text-gray-800 hover:text-blue-700"
+          }`}
         >
           {item.label}
-          <span className="pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left scale-x-0 rounded bg-blue-700 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+          <span
+            className={`pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left rounded bg-blue-700 transition-transform duration-200 ease-out ${
+              isActive || isOpen
+                ? "scale-x-100"
+                : "scale-x-0 group-hover:scale-x-100"
+            }`}
+          />
         </button>
       </div>
     );
@@ -473,13 +642,13 @@ export default function Header() {
 
       return (
         <div key={item.label}>
-          <h3 className="px-4 py-2 text-base font-semibold text-gray-900">
+          <h3 className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-700">
             {item.label}
           </h3>
-          <div className="space-y-2 border-l border-gray-100 pl-6">
+          <div className="mt-3 space-y-3 border-l-2 border-slate-200 pl-4">
             {item.dropdown.columns.map((column, columnIndex) => (
               <div key={`${item.label}-mobile-column-${columnIndex}`}>
-                <p className="text-xs font-semibold uppercase tracking-wide text-blue-900">
+                <p className="rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
                   {column.title}
                 </p>
                 <ul className="mt-2 space-y-2">
@@ -501,6 +670,44 @@ export default function Header() {
         </div>
       );
     });
+
+  const renderMobileAreas = () => (
+    <div className="space-y-3">
+      <h3 className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-700">
+        Khu vực
+      </h3>
+      {AREA_GROUPS.map((group) => (
+        <div key={group.title} className="px-4">
+          <p className="rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+            {group.title}
+          </p>
+          <ul className="mt-2 space-y-2">
+            {group.items.map((area) => (
+              <li key={area.name}>
+                <Link
+                  href={area.href}
+                  onClick={() => setIsSheetOpen(false)}
+                  className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors duration-150 hover:bg-gray-100"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700">
+                    {renderAreaInitials(area)}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold text-gray-900">
+                      {area.name}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {area.description}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
 
   const renderDropdownContent = () => {
     if (!activeDropdownItem?.dropdown) {
@@ -530,18 +737,18 @@ export default function Header() {
     return (
       <>
         <div
-          className="fixed inset-0 top-16 z-40 bg-black/45"
+          className="fixed inset-0 top-16 z-[90] bg-black/45"
           onClick={() => setOpenDropdown(null)}
         />
         <div
           ref={dropdownPanelRef}
-          className="fixed inset-x-0 top-16 z-50 border-b border-white/15 bg-gradient-to-br from-white/12 via-white/8 to-white/4 px-6 py-14 shadow-[0_35px_160px_-45px_rgba(15,23,42,0.75)] backdrop-blur-2xl sm:px-12 lg:px-20"
+          className="fixed inset-x-0 top-16 z-[110] border-b border-white/15 bg-gradient-to-br from-white/12 via-white/8 to-white/4 px-6 py-14 shadow-[0_35px_160px_-45px_rgba(15,23,42,0.75)] backdrop-blur-2xl sm:px-12 lg:px-20"
         >
           <div className="mx-auto grid w-full max-w-[1300px] gap-12 text-white lg:grid-cols-[minmax(0,2.1fr)_minmax(0,1fr)]">
             <div className={`grid gap-x-12 gap-y-8 ${columnLayoutClass}`}>
               {columns.map((column, columnIndex) => (
                 <div key={`${activeDropdownItem.label}-column-${columnIndex}`}>
-                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#E5EDFF]">
+                  <h3 className="text-sm font-bold uppercase tracking-[0.35em] text-white drop-shadow-md">
                     {column.title}
                   </h3>
                   <ul className="mt-5 space-y-4">
@@ -578,28 +785,28 @@ export default function Header() {
             <Link
               href={feature.href}
               onClick={() => setOpenDropdown(null)}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white p-6 shadow-lg ring-1 ring-slate-200 transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/12 p-6 shadow-xl backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-slate-900 hover:shadow-2xl"
             >
-              <div className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-100">
+              <div className="aspect-[4/3] overflow-hidden rounded-xl bg-white/10">
                 <Image
                   src={feature.image || DEFAULT_FEATURE_IMAGE}
                   alt={feature.title}
                   width={320}
                   height={240}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </div>
               <div className="mt-6 flex flex-1 flex-col justify-between space-y-4">
-                <span className="inline-flex items-center gap-2 self-start rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+                <span className="inline-flex items-center gap-2 self-start rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-sky-700">
                   {feature.badge}
                 </span>
-                <h4 className="text-lg font-semibold text-slate-900">
+                <h4 className="text-lg font-semibold text-white transition-colors duration-300 group-hover:text-slate-900">
                   {feature.title}
                 </h4>
-                <p className="text-sm leading-relaxed text-slate-600">
+                <p className="text-sm leading-relaxed text-white/80 transition-colors duration-300 group-hover:text-slate-600">
                   {feature.description}
                 </p>
-                <span className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition-colors duration-150 group-hover:text-sky-700">
+                <span className="inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors duration-300 group-hover:text-sky-600">
                   {feature.cta}
                   <span aria-hidden>→</span>
                 </span>
@@ -615,7 +822,43 @@ export default function Header() {
     <>
       {renderDropdownContent()}
 
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur">
+      {/* Search Modal */}
+      {isSearchOpen && (
+        <div
+          className="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm"
+          onClick={() => setIsSearchOpen(false)}
+        >
+          <div
+            className="mx-auto mt-20 max-w-2xl rounded-2xl bg-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 border-b border-gray-200 p-4">
+              <Search size={20} className="text-gray-400" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Tìm kiếm..."
+                className="flex-1 border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                autoFocus
+              />
+              <kbd className="hidden rounded border border-gray-300 px-2 py-1 text-xs text-gray-500 sm:inline-block">
+                ESC
+              </kbd>
+            </div>
+            <div className="p-4 text-sm text-gray-500">
+              Kết quả tìm kiếm sẽ hiển thị ở đây...
+            </div>
+          </div>
+        </div>
+      )}
+
+      <header
+        className={`fixed top-0 left-0 right-0 z-[100] border-b transition-all duration-300 ${
+          isScrolled
+            ? "border-gray-200/50 bg-white/70 backdrop-blur-xl shadow-lg"
+            : "border-gray-200/30 bg-white/60 backdrop-blur-xl"
+        }`}
+      >
         <div
           ref={navigationWrapperRef}
           className="relative mx-auto max-w-[1200px] px-6"
@@ -632,8 +875,9 @@ export default function Header() {
                   alt="HCMUTE Logo"
                   width={48}
                   height={48}
-                  className="h-12 w-12"
+                  className="h-12 w-12 transition-transform duration-300 hover:scale-105"
                   priority
+                  style={{ margin: 10 }}
                 />
               </Link>
             </div>
@@ -642,26 +886,82 @@ export default function Header() {
               {NAVIGATION.right.map((item) => renderDesktopItem(item))}
 
               <div className="ml-auto flex items-center gap-3">
+                <div className="relative" ref={areaRef}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsAreaOpen((value) => !value);
+                      setIsLanguageOpen(false);
+                      setOpenDropdown(null);
+                    }}
+                    aria-expanded={isAreaOpen}
+                    aria-haspopup="menu"
+                    className="flex items-center justify-center rounded-full border border-slate-200 p-2 text-xs font-medium text-slate-700 transition-colors duration-150 hover:border-sky-200 hover:text-sky-700 focus:outline-none"
+                  >
+                    <MapPin size={16} className="opacity-80" />
+                  </button>
+
+                  {isAreaOpen && (
+                    <div className="absolute right-0 z-[110] mt-3 w-96 rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200">
+                      <div className="max-h-[420px] overflow-y-auto p-5">
+                        {AREA_GROUPS.map((group) => (
+                          <div key={group.title} className="mb-5 last:mb-0">
+                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                              {group.title}
+                            </p>
+                            <ul className="mt-3 space-y-2">
+                              {group.items.map((area) => (
+                                <li key={area.name}>
+                                  <Link
+                                    href={area.href}
+                                    onClick={() => setIsAreaOpen(false)}
+                                    className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors duration-150 hover:bg-slate-100"
+                                  >
+                                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-600">
+                                      {renderAreaInitials(area)}
+                                    </span>
+                                    <div className="flex flex-col">
+                                      <span className="text-sm font-semibold text-slate-900">
+                                        {area.name}
+                                      </span>
+                                      <span className="text-xs text-slate-500">
+                                        {area.description}
+                                      </span>
+                                    </div>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div className="relative" ref={languageRef}>
                   <button
                     type="button"
-                    onClick={() => setIsLanguageOpen((value) => !value)}
+                    onClick={() => {
+                      setIsLanguageOpen((value) => !value);
+                      setIsAreaOpen(false);
+                    }}
                     aria-expanded={isLanguageOpen}
                     aria-haspopup="menu"
-                    className="flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-150 hover:border-blue-200 hover:text-blue-700 focus:outline-none"
+                    className="flex items-center gap-2 whitespace-nowrap rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-150 hover:border-blue-200 hover:text-blue-700 focus:outline-none"
                   >
                     <img
                       src="https://flagcdn.com/w20/vn.png"
                       alt="Vietnam flag"
                       width={20}
                       height={14}
-                      className="rounded"
+                      className="shrink-0 rounded"
                     />
-                    VN
+                    <span>VN</span>
                   </button>
 
                   {isLanguageOpen && (
-                    <div className="absolute right-0 mt-2 w-32 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
+                    <div className="absolute right-0 z-[110] mt-2 w-32 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
                       <button
                         type="button"
                         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-gray-700 transition-colors duration-150 hover:bg-gray-50"
@@ -708,7 +1008,7 @@ export default function Header() {
       </header>
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent side="left" className="w-full max-w-xs p-0">
+        <SheetContent side="left" className="flex w-full max-w-xs flex-col p-0">
           <SheetHeader className="flex flex-row items-center justify-between border-b px-4 py-3">
             <SheetTitle className="text-left text-base font-semibold text-gray-900">
               Menu
@@ -716,19 +1016,23 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setIsSheetOpen(false)}
-              className="rounded-full border border-gray-200 p-2 text-gray-600"
+              className="rounded-full border border-gray-200 p-2 text-gray-600 transition-colors duration-150 hover:border-gray-300 hover:text-gray-900"
             >
-              <X size={16} />
             </button>
           </SheetHeader>
 
-          <div className="space-y-6 px-4 py-6">
-            <section className="space-y-2">
-              {renderMobileSection(NAVIGATION.left)}
-            </section>
-            <section className="space-y-2 border-t border-gray-100 pt-4">
-              {renderMobileSection(NAVIGATION.right)}
-            </section>
+          <div className="flex-1 overflow-y-auto">
+            <div className="space-y-6 px-4 py-6">
+              <section className="space-y-4">
+                {renderMobileSection(NAVIGATION.left)}
+              </section>
+              <section className="space-y-4 border-t border-gray-100 pt-4">
+                {renderMobileSection(NAVIGATION.right)}
+              </section>
+              <section className="space-y-4 border-t border-gray-100 pt-4">
+                {renderMobileAreas()}
+              </section>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
