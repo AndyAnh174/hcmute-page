@@ -197,6 +197,17 @@
   }
 }
 
+/* Border Beam Animation */
+@keyframes border-beam {
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam calc(var(--duration) * 1s) linear infinite;
+}
+
 /* Splide Custom Styles */
 .splide__pagination {
   bottom: 2rem !important;
