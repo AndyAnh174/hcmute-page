@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "Trường Đại học Sư phạm Kỹ thuật TP.HCM - HCMUTE",
   description:
     "Trường Đại học Sư phạm Kỹ thuật TP.HCM - Đào tạo nguồn nhân lực chất lượng cao trong lĩnh vực kỹ thuật và công nghệ",
+  icons: {
+    icon: "/logo/square_logo.png",
+    shortcut: "/logo/square_logo.png",
+    apple: "/logo/square_logo.png",
+  },
   openGraph: {
     title: "Trường Đại học Sư phạm Kỹ thuật TP.HCM - HCMUTE",
     description:
