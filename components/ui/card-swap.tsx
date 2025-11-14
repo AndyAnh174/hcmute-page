@@ -1,189 +1,289 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import Image from "next/image";
-import Link from "next/link";
+import React, {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import gsap from "gsap";
 
-interface CardSwapItem {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  image: string;
-  readTime: string;
-  href?: string;
-}
-
-interface CardSwapProps {
-  items: CardSwapItem[];
+export interface CardSwapProps {
+  width?: number | string;
+  height?: number | string;
+  cardDistance?: number;
+  verticalDistance?: number;
+  delay?: number;
+  pauseOnHover?: boolean;
+  onCardClick?: (idx: number) => void;
+  skewAmount?: number;
+  easing?: "linear" | "elastic";
   className?: string;
-  autoRotate?: boolean;
-  autoRotateInterval?: number;
+  children: ReactNode;
 }
 
-export function CardSwap({ 
-  items, 
-  className = "", 
-  autoRotate = false, 
-  autoRotateInterval = 10000 
-}: CardSwapProps) {
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  customClass?: string;
+}
+
+export const Card = forwardRef<HTMLDivElement, CardProps>(
+  ({ customClass = "", className = "", ...rest }, ref) => (
+    <div
+      ref={ref}
+      {...rest}
+      className={`absolute top-1/2 left-1/2 rounded-2xl border border-white/15 bg-slate-900/80 text-white shadow-[0_25px_60px_-25px_rgba(15,23,42,0.6)] [transform-style:preserve-3d] [will-change:transform] [backface-visibility:hidden] ${customClass} ${className}`.trim()}
+    />
+  )
+);
+Card.displayName = "Card";
+
+type CardRef = RefObject<HTMLDivElement>;
+
+interface Slot {
+  x: number;
+  y: number;
+  z: number;
+  zIndex: number;
+}
+
+const makeSlot = (
+  index: number,
+  distX: number,
+  distY: number,
+  total: number
+): Slot => ({
+  x: index * distX,
+  y: -index * distY,
+  z: -index * distX * 1.5,
+  zIndex: total - index,
+});
+
+const placeNow = (el: HTMLElement, slot: Slot, skew: number) =>
+  gsap.set(el, {
+    x: slot.x,
+    y: slot.y,
+    z: slot.z,
+    xPercent: -50,
+    yPercent: -50,
+    skewY: skew,
+    transformOrigin: "center center",
+    zIndex: slot.zIndex,
+    force3D: true,
+  });
+
+const CardSwap = ({
+  width = 440,
+  height = 520,
+  cardDistance = 60,
+  verticalDistance = 70,
+  delay = 5000,
+  pauseOnHover = true,
+  onCardClick,
+  skewAmount = 6,
+  easing = "elastic",
+  className = "",
+  children,
+}: CardSwapProps) => {
+  const childArr = useMemo(
+    () =>
+      Children.toArray(children).filter(
+        (child): child is ReactElement<CardProps> => isValidElement(child)
+      ),
+    [children]
+  );
+
+  const refs = useMemo<CardRef[]>(
+    () => childArr.map(() => React.createRef<HTMLDivElement>()),
+    [childArr]
+  );
+
+  const order = useRef<number[]>(childArr.map((_, idx) => idx));
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!refs.length) return;
+    const nodes = refs.map((r) => r.current).filter(Boolean) as HTMLDivElement[];
+    if (nodes.length !== refs.length) return;
 
-    const cards = containerRef.current.querySelectorAll(".card-swap-item");
-    
-    cards.forEach((card, index) => {
-      if (index === activeIndex) {
-        gsap.to(card, {
-          zIndex: items.length,
-          scale: 1,
-          y: 0,
-          rotation: 0,
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          ease: "power3.out",
-        });
-      } else {
-        const offset = index - activeIndex;
-        const absOffset = Math.abs(offset);
-        const isBefore = offset < 0;
-        
-        gsap.to(card, {
-          zIndex: items.length - absOffset,
-          scale: 1 - absOffset * 0.06,
-          y: isBefore ? -absOffset * 25 : absOffset * 25,
-          x: isBefore ? -absOffset * 15 : absOffset * 15,
-          rotation: isBefore ? -absOffset * 3 : absOffset * 3,
-          opacity: absOffset > 2 ? 0.4 : 1 - absOffset * 0.2,
-          duration: 0.6,
-          ease: "power3.out",
-        });
-      }
-    });
-  }, [activeIndex, items.length]);
+    order.current = refs.map((_, idx) => idx);
 
-  // Auto-rotate effect
-  useEffect(() => {
-    if (!autoRotate || items.length <= 1) return;
+    const total = refs.length;
+    nodes.forEach((node, idx) =>
+      placeNow(node, makeSlot(idx, cardDistance, verticalDistance, total), skewAmount)
+    );
 
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % items.length);
-    }, autoRotateInterval);
+    const config =
+      easing === "elastic"
+        ? {
+            ease: "elastic.out(0.6,0.9)",
+            durDrop: 2,
+            durMove: 2,
+            durReturn: 2,
+            promoteOverlap: 0.9,
+            returnDelay: 0.05,
+          }
+        : {
+            ease: "power1.inOut",
+            durDrop: 0.8,
+            durMove: 0.8,
+            durReturn: 0.8,
+            promoteOverlap: 0.45,
+            returnDelay: 0.2,
+          };
 
-    return () => clearInterval(interval);
-  }, [autoRotate, autoRotateInterval, items.length]);
+    const swap = () => {
+      if (order.current.length < 2) return;
 
-  const handleCardClick = (index: number) => {
-    if (index !== activeIndex) {
-      setActiveIndex(index);
+      const [front, ...rest] = order.current;
+      const elFront = refs[front].current;
+      if (!elFront) return;
+
+      const tl = gsap.timeline();
+      tlRef.current = tl;
+
+      tl.to(elFront, {
+        y: "+=480",
+        duration: config.durDrop,
+        ease: config.ease,
+      });
+
+      tl.addLabel("promote", `-=${config.durDrop * config.promoteOverlap}`);
+
+      rest.forEach((idx, position) => {
+        const el = refs[idx].current;
+        if (!el) return;
+        const slot = makeSlot(position, cardDistance, verticalDistance, refs.length);
+        tl.set(el, { zIndex: slot.zIndex }, "promote");
+        tl.to(
+          el,
+          {
+            x: slot.x,
+            y: slot.y,
+            z: slot.z,
+            duration: config.durMove,
+            ease: config.ease,
+          },
+          `promote+=${position * 0.15}`
+        );
+      });
+
+      const backSlot = makeSlot(
+        refs.length - 1,
+        cardDistance,
+        verticalDistance,
+        refs.length
+      );
+      tl.addLabel("return", `promote+=${config.durMove * config.returnDelay}`);
+
+      tl.call(
+        () => {
+          gsap.set(elFront, { zIndex: backSlot.zIndex });
+        },
+        undefined,
+        "return"
+      );
+
+      tl.to(
+        elFront,
+        {
+          x: backSlot.x,
+          y: backSlot.y,
+          z: backSlot.z,
+          duration: config.durReturn,
+          ease: config.ease,
+        },
+        "return"
+      );
+
+      tl.call(() => {
+        order.current = [...rest, front];
+      });
+    };
+
+    swap();
+    intervalRef.current = window.setInterval(swap, delay);
+
+    const node = containerRef.current;
+    let cleanupHover: (() => void) | undefined;
+
+    if (pauseOnHover && node) {
+      const handleEnter = () => {
+        tlRef.current?.pause();
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      };
+      const handleLeave = () => {
+        tlRef.current?.play();
+        if (!intervalRef.current) {
+          intervalRef.current = window.setInterval(swap, delay);
+        }
+      };
+      node.addEventListener("mouseenter", handleEnter);
+      node.addEventListener("mouseleave", handleLeave);
+      cleanupHover = () => {
+        node.removeEventListener("mouseenter", handleEnter);
+        node.removeEventListener("mouseleave", handleLeave);
+      };
     }
-  };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
+    return () => {
+      cleanupHover?.();
+      tlRef.current?.kill();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [
+    refs,
+    cardDistance,
+    verticalDistance,
+    delay,
+    pauseOnHover,
+    skewAmount,
+    easing,
+  ]);
+
+  const rendered = childArr.map((child, idx) =>
+    cloneElement(child, {
+      key: idx,
+      ref: refs[idx],
+      style: {
+        width: typeof width === "number" ? `${width}px` : width,
+        height: typeof height === "number" ? `${height}px` : height,
+        ...(child.props.style ?? {}),
+      },
+      onClick: (event: React.MouseEvent<HTMLDivElement>) => {
+        child.props.onClick?.(event);
+        onCardClick?.(idx);
+      },
+    })
+  );
+
+  const resolvedWidth = typeof width === "number" ? `${width}px` : width;
+  const resolvedHeight = typeof height === "number" ? `${height}px` : height;
 
   return (
-    <div ref={containerRef} className={`relative h-[520px] ${className}`}>
-      {items.map((item, index) => {
-        const offset = index - activeIndex;
-        const absOffset = Math.abs(offset);
-        const isBefore = offset < 0;
-        
-        const CardContent = (
-          <div
-            className="card-swap-item absolute inset-0 cursor-pointer rounded-3xl overflow-hidden bg-white border border-gray-200 shadow-xl"
-            onClick={() => handleCardClick(index)}
-            style={{
-              zIndex: items.length - absOffset,
-              transform: `translate(${isBefore ? -absOffset * 15 : absOffset * 15}px, ${isBefore ? -absOffset * 25 : absOffset * 25}px) scale(${1 - absOffset * 0.06}) rotate(${isBefore ? -absOffset * 3 : absOffset * 3}deg)`,
-              opacity: absOffset > 2 ? 0.4 : 1 - absOffset * 0.2,
-            }}
-          >
-            <div className="relative h-full w-full">
-              {/* Background Image */}
-              <div className="absolute inset-0">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 500px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10 h-full flex flex-col justify-between p-8">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-white/95 backdrop-blur-sm text-gray-800 border border-white/30 shadow-sm">
-                      {item.category}
-                    </span>
-                    <span className="text-xs text-white/90 font-medium bg-black/20 px-2 py-1 rounded">
-                      {formatDate(item.date)}
-                    </span>
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-white mb-3 leading-tight line-clamp-2 drop-shadow-lg">
-                    {item.title}
-                  </h3>
-                </div>
-
-                <div>
-                  <p className="text-sm text-white/90 leading-relaxed line-clamp-3 mb-4 drop-shadow">
-                    {item.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/80 font-medium">
-                      {item.readTime} đọc
-                    </span>
-                    <div className="flex items-center text-white hover:text-blue-200 transition-colors text-sm font-medium">
-                      Đọc thêm
-                      <svg
-                        className="w-4 h-4 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-blue-500/0 hover:bg-blue-500/10 transition-colors duration-300 rounded-3xl"></div>
-            </div>
-          </div>
-        );
-
-        return item.href ? (
-          <Link key={item.id} href={item.href} className="block h-full w-full">
-            {CardContent}
-          </Link>
-        ) : (
-          <div key={item.id}>{CardContent}</div>
-        );
-      })}
+    <div
+      ref={containerRef}
+      className={`relative ${className}`.trim()}
+      style={{ width: resolvedWidth, height: resolvedHeight }}
+    >
+      {rendered}
     </div>
   );
-}
+};
+
+export default CardSwap;
+
 

@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { Calendar, ArrowRight, Clock, TrendingUp, Hash } from "lucide-react";
 import Image from "next/image";
-import { CardSwap } from "@/components/ui/card-swap";
+import CardSwap, { Card } from "@/components/ui/card-swap";
 import Link from "next/link";
 
 interface NewsItem {
@@ -91,47 +91,53 @@ export default function NewsSection() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[1.1fr_1fr] items-center gap-12 lg:gap-20 mb-16">
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr] items-center gap-8 lg:gap-16 mb-14">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
+            className="text-center lg:text-left space-y-4"
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700">
               <span className="inline-flex size-2 rounded-full bg-blue-600" />
               Tin tức nổi bật của HCMUTE
             </div>
 
-            <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl xl:text-[52px] font-semibold leading-tight text-gray-900">
-              TIN TỨC &amp; SỰ KIỆN
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-4xl xl:text-[46px] font-semibold leading-tight text-gray-900">
+              <span className="bg-gradient-to-r from-blue-700 via-violet-600 to-red-500 bg-clip-text text-transparent">
+                TIN TỨC &amp; SỰ KIỆN
+              </span>
             </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl">
-              Cập nhật những diễn biến mới nhất về hoạt động đào tạo, nghiên cứu
-              và kết nối doanh nghiệp tại trường Đại học Sư phạm Kỹ thuật TP.HCM.
+            <p className="mt-3 text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed mx-auto lg:mx-0">
+              <span className="font-semibold text-gray-800">
+                Cập nhật nổi bật:
+              </span>{" "}
+              những diễn biến mới nhất về hoạt động đào tạo, nghiên cứu và kết
+              nối doanh nghiệp tại Trường Đại học Sư phạm Kỹ thuật TP.HCM.
             </p>
 
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <p className="text-sm uppercase tracking-[0.35em] text-gray-500">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-lg shadow-blue-100/60 text-left">
+                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-blue-700">
                   Tổng số bài viết
                 </p>
-                <p className="mt-4 text-4xl font-semibold text-gray-900">
+                <p className="mt-4 text-3xl sm:text-4xl font-semibold text-gray-900">
                   {newsItems.length.toLocaleString("vi-VN")}+
                 </p>
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-gray-500">
                   Thư viện tin tức được cập nhật liên tục mỗi tuần.
                 </p>
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-blue-50 to-purple-50 p-5 shadow-sm">
-                <p className="text-sm uppercase tracking-[0.35em] text-gray-500">
+              <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-blue-600/10 via-purple-100 to-white p-5 shadow-lg shadow-purple-100/60 text-left">
+                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-purple-700">
                   Sự kiện sắp tới
                 </p>
-                <p className="mt-4 text-2xl font-semibold text-gray-900">
+                <p className="mt-4 text-xl sm:text-2xl font-semibold text-gray-900">
                   {newsItems.filter((item) => item.category === "Sự kiện").length}{" "}
                   sự kiện
                 </p>
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-gray-500">
                   Tham gia các hội thảo, chương trình kết nối doanh nghiệp và sự kiện sinh viên.
                 </p>
               </div>
@@ -143,17 +149,56 @@ export default function NewsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="lg:mt-16"
+            className="lg:mt-48  absolute flex justify-center lg:justify-end min-h-[600px] sm:min-h-[540px] w-full"
           >
-            <CardSwap
-              items={spotlight.map((item) => ({
-                ...item,
-                href: `/tin-tuc/${item.id}`,
-              }))}
-              className="max-w-lg mx-auto"
-              autoRotate={true}
-              autoRotateInterval={10000}
-            />
+            <div className="scale-[0.85] sm:scale-100 translate-y-16 sm:translate-y-6 lg:translate-y-2">
+              <CardSwap
+                width="min(460px, 88vw)"
+                height={360}
+                cardDistance={70}
+                verticalDistance={90}
+                delay={7000}
+                className="w-full max-w-[460px] sm:max-w-[320px]"
+              >
+              {spotlight.map((item) => (
+                <Card
+                  key={item.id}
+                  customClass="overflow-hidden border-white/25 bg-slate-900/70 after:absolute after:inset-0 after:bg-gradient-to-t after:from-slate-950/90 after:via-slate-900/40 after:to-transparent"
+                >
+                  <Link href={`/tin-tuc/${item.id}`} className="block h-full w-full">
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 420px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                      <div className="absolute top-6 left-6 flex flex-col gap-2">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full border border-white/30 bg-white/15 text-xs font-semibold uppercase tracking-[0.2em] text-white">
+                          {item.category}
+                        </span>
+                        <span className="inline-flex items-center gap-2 text-xs text-white/80 font-medium bg-white/5 px-2 py-1 rounded-full border border-white/10">
+                          <Calendar className="w-3 h-3" />
+                          {formatDate(item.date)}
+                        </span>
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 p-6">
+                        <h3 className="text-xl font-semibold text-white leading-tight line-clamp-2 drop-shadow">
+                          {item.title}
+                        </h3>
+                        <div className="mt-4 flex items-center gap-2 text-xs text-white/80">
+                          <Clock className="w-3 h-3" />
+                          {item.readTime}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </Card>
+              ))}
+              </CardSwap>
+            </div>
           </motion.div>
         </div>
 

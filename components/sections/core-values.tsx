@@ -105,7 +105,7 @@ export default function CoreValues() {
                 GIÁO DỤC
               </AuroraText>
             </h2>
-            <p className="text-6xl flex gap-2 font-bold text-black-900 leading-relaxed">
+            <div className="text-6xl flex gap-2 font-bold text-black-900 leading-relaxed">
               <div>
                 <span style={{ color: "#1760dfff" }}>NHÂN BẢN</span>
                 <br />
@@ -113,7 +113,7 @@ export default function CoreValues() {
                 <br />
                 <span style={{ color: "#1760dfb3" }}>HỘI NHẬP</span>
               </div>
-            </p>
+            </div>
           </motion.div>
 
           {/* Right Side - Carousel */}
