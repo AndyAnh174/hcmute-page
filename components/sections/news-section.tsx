@@ -55,19 +55,6 @@ const newsItems: NewsItem[] = [
     views: 312,
     tags: ["ai", "iot", "giáo-dục"],
   },
-  {
-    id: 104,
-    title:
-      "Khởi động chương trình thực tập doanh nghiệp cho sinh viên năm cuối",
-    excerpt:
-      "Hơn 1000 sinh viên năm cuối sẽ được thực tập tại các doanh nghiệp hàng đầu trong và ngoài nước.",
-    date: "2024-01-08",
-    category: "Đào tạo",
-    image: "/news/Hinh khoi nghiep 11.jpg",
-    readTime: "3 phút",
-    views: 156,
-    tags: ["thực-tập", "doanh-nghiệp", "sinh-viên"],
-  },
 ];
 
 const formatDate = (dateString: string) => {
@@ -84,15 +71,57 @@ export default function NewsSection() {
   const spotlight = newsItems.slice(1, 4);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-20">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-200px] left-[-150px] h-[480px] w-[480px] rounded-full bg-blue-100/40 blur-3xl" />
-        <div className="absolute bottom-[-220px] right-[-180px] h-[520px] w-[520px] rounded-full bg-purple-100/30 blur-3xl" />
-      </div>
-
+    <section className="relative overflow-hidden ">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[1.05fr_0.95fr] items-center gap-8 lg:gap-16 mb-14">
+        <div className="border-1 relative h-[200px] lg:h-[500px] rounded-3xl overflow-hidden mt-20 lg:mt-48">
           <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="lg:mt-48  absolute flex justify-center lg:justify-end min-h-[600px] sm:min-h-[540px] w-full"
+          >
+            <div className="scale-[0.85] sm:scale-100 mt-12">
+              <CardSwap
+                width="min(600px, 88vw)"
+                height={320}
+                cardDistance={70}
+                verticalDistance={90}
+                delay={7000}
+                className="w-full max-w-[460px] sm:max-w-[320px]"
+              >
+                {spotlight.map((item) => (
+                  <Card
+                    key={item.id}
+                    customClass=" !border-gray-300 bg-white/50 overflow-hidden"
+                  >
+                    <div className="block h-full w-full">
+                      <div className="relative h-full w-full">
+                        <div className="flex flex-col h-full">
+                          <div className="pl-4 pt-4 bg-transparent backdrop-blur-md flex flex-col w-full">
+                            <h3 className="text-lg font-bold text-gray-600 leading-tight line-clamp-2 mb-2">
+                              {item.title}
+                            </h3>
+                          </div>
+
+                          <div className="flex-1 relative">
+                            <Image
+                              src={item.image}
+                              alt={item.title}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 420px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </CardSwap>
+            </div>
+          </motion.div>
+          {/* <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -119,7 +148,7 @@ export default function NewsSection() {
 
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-lg shadow-blue-100/60 text-left">
-                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-blue-700">
+                <p className="text-xs font-semibold uppercase   text-blue-700">
                   Tổng số bài viết
                 </p>
                 <p className="mt-4 text-3xl sm:text-4xl font-semibold text-gray-900">
@@ -134,76 +163,23 @@ export default function NewsSection() {
                   Sự kiện sắp tới
                 </p>
                 <p className="mt-4 text-xl sm:text-2xl font-semibold text-gray-900">
-                  {newsItems.filter((item) => item.category === "Sự kiện").length}{" "}
+                  {
+                    newsItems.filter((item) => item.category === "Sự kiện")
+                      .length
+                  }{" "}
                   sự kiện
                 </p>
                 <p className="mt-2 text-sm text-gray-500">
-                  Tham gia các hội thảo, chương trình kết nối doanh nghiệp và sự kiện sinh viên.
+                  Tham gia các hội thảo, chương trình kết nối doanh nghiệp và sự
+                  kiện sinh viên.
                 </p>
               </div>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="lg:mt-48  absolute flex justify-center lg:justify-end min-h-[600px] sm:min-h-[540px] w-full"
-          >
-            <div className="scale-[0.85] sm:scale-100 translate-y-16 sm:translate-y-6 lg:translate-y-2">
-              <CardSwap
-                width="min(460px, 88vw)"
-                height={360}
-                cardDistance={70}
-                verticalDistance={90}
-                delay={7000}
-                className="w-full max-w-[460px] sm:max-w-[320px]"
-              >
-              {spotlight.map((item) => (
-                <Card
-                  key={item.id}
-                  customClass="overflow-hidden border-white/25 bg-slate-900/70 after:absolute after:inset-0 after:bg-gradient-to-t after:from-slate-950/90 after:via-slate-900/40 after:to-transparent"
-                >
-                  <Link href={`/tin-tuc/${item.id}`} className="block h-full w-full">
-                    <div className="relative h-full w-full">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 420px"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                      <div className="absolute top-6 left-6 flex flex-col gap-2">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full border border-white/30 bg-white/15 text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                          {item.category}
-                        </span>
-                        <span className="inline-flex items-center gap-2 text-xs text-white/80 font-medium bg-white/5 px-2 py-1 rounded-full border border-white/10">
-                          <Calendar className="w-3 h-3" />
-                          {formatDate(item.date)}
-                        </span>
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 p-6">
-                        <h3 className="text-xl font-semibold text-white leading-tight line-clamp-2 drop-shadow">
-                          {item.title}
-                        </h3>
-                        <div className="mt-4 flex items-center gap-2 text-xs text-white/80">
-                          <Clock className="w-3 h-3" />
-                          {item.readTime}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </Card>
-              ))}
-              </CardSwap>
-            </div>
-          </motion.div>
+          </motion.div> */}
         </div>
 
         <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid md:grid-cols-2 pt-12 lg:grid-cols-3 gap-6"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -227,7 +203,7 @@ export default function NewsSection() {
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  
+
                   {/* Views Indicator - Top Right */}
                   {item.views && (
                     <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-black/50 backdrop-blur-sm border border-white/20 z-10">
@@ -325,4 +301,3 @@ export default function NewsSection() {
     </section>
   );
 }
-
