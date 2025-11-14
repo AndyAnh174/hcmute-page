@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Menu, Globe, X, MapPin, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,6 +28,359 @@ type NavItem = {
     columns: DropdownColumn[];
   };
 };
+
+type AreaItem = {
+  name: string;
+  description: string;
+  href: string;
+  initials?: string;
+};
+
+type AreaGroup = {
+  title: string;
+  items: AreaItem[];
+};
+
+const AREA_GROUPS: AreaGroup[] = [
+  {
+    title: "Khoa Viện",
+    items: [
+      {
+        name: "Khoa Cơ khí Chế tạo máy",
+        description: "Trọng tâm vào cơ khí, chế tạo máy và công nghệ vật liệu.",
+        href: "/khoa/co-khi-che-tao-may",
+        initials: "ME",
+      },
+      {
+        name: "Khoa Điện – Điện tử",
+        description: "Đào tạo kỹ sư điện, điện tử, viễn thông và tự động hóa.",
+        href: "/khoa/dien-dien-tu",
+        initials: "DEE",
+      },
+      {
+        name: "Khoa Cơ khí Động lực",
+        description: "Đào tạo kỹ sư cơ khí động lực, ô tô và máy móc.",
+        href: "/khoa/co-khi-dong-luc",
+        initials: "AE",
+      },
+      {
+        name: "Khoa In & Truyền thông",
+        description: "Công nghệ in, truyền thông và thiết kế đồ họa.",
+        href: "/khoa/in-truyen-thong",
+        initials: "PRT",
+      },
+      {
+        name: "Khoa Công nghệ Thông tin",
+        description: "Các ngành CNTT, khoa học dữ liệu, trí tuệ nhân tạo.",
+        href: "/khoa/cong-nghe-thong-tin",
+        initials: "IT",
+      },
+      {
+        name: "Khoa Xây dựng",
+        description: "Kỹ thuật xây dựng, kiến trúc và quy hoạch đô thị.",
+        href: "/khoa/xay-dung",
+        initials: "CE",
+      },
+      {
+        name: "Khoa Thời trang & Du lịch",
+        description: "Thiết kế thời trang, quản trị du lịch và khách sạn.",
+        href: "/khoa/thoi-trang-du-lich",
+        initials: "FT",
+      },
+      {
+        name: "Khoa Kinh tế",
+        description: "Quản lý công nghiệp, kinh tế, logistics và quản trị.",
+        href: "/khoa/kinh-te",
+        initials: "ECO",
+      },
+      {
+        name: "Khoa Công nghệ Hóa học & Thực phẩm",
+        description: "Công nghệ hóa học, thực phẩm, vật liệu và môi trường.",
+        href: "/khoa/hoa-hoc-thuc-pham",
+        initials: "CHE",
+      },
+      {
+        name: "Khoa Ngoại ngữ",
+        description: "Đào tạo ngoại ngữ, giao tiếp quốc tế và văn hóa.",
+        href: "/khoa/ngoai-ngu",
+        initials: "FL",
+      },
+      {
+        name: "Khoa Khoa học Ứng dụng",
+        description: "Toán học, vật lý, hóa học ứng dụng và khoa học cơ bản.",
+        href: "/khoa/khoa-hoc-ung-dung",
+        initials: "AS",
+      },
+      {
+        name: "Viện Sư phạm Kỹ thuật",
+        description: "Đào tạo giáo viên kỹ thuật và nghiên cứu giáo dục.",
+        href: "/vien/su-pham-ky-thuat",
+        initials: "ITE",
+      },
+    ],
+  },
+  {
+    title: "Phòng Ban",
+    items: [
+      {
+        name: "Phòng Đào tạo",
+        description: "Quản lý chương trình đào tạo, lịch học và hồ sơ học vụ.",
+        href: "/phong/dao-tao",
+        initials: "DT",
+      },
+      {
+        name: "Phòng Hợp tác và Phát triển Đào tạo",
+        description: "Hợp tác đào tạo, phát triển chương trình và liên kết giáo dục.",
+        href: "/phong/hop-tac-phat-trien-dao-tao",
+        initials: "HTDT",
+      },
+      {
+        name: "Phòng Khoa học Công nghệ",
+        description: "Quản lý hoạt động nghiên cứu khoa học và công nghệ.",
+        href: "/phong/khoa-hoc-cong-nghe",
+        initials: "KHCN",
+      },
+      {
+        name: "Phòng Tổ chức Hành chính",
+        description: "Quản lý tổ chức, hành chính và nhân sự.",
+        href: "/phong/to-chuc-hanh-chinh",
+        initials: "TCHC",
+      },
+      {
+        name: "Phòng Kế hoạch Tài chính",
+        description: "Quản lý ngân sách, kế hoạch và tài chính của trường.",
+        href: "/phong/ke-hoach-tai-chinh",
+        initials: "KHTC",
+      },
+      {
+        name: "Phòng Tuyển sinh và Công tác Sinh viên",
+        description: "Tuyển sinh, hỗ trợ sinh viên và hoạt động đoàn thể.",
+        href: "/phong/tuyen-sinh-cong-tac-sinh-vien",
+        initials: "TSCTSV",
+      },
+      {
+        name: "Phòng Khảo thí và Đảm bảo Chất lượng",
+        description: "Tổ chức khảo thí và đảm bảo chất lượng đào tạo.",
+        href: "/phong/khao-thi-dam-bao-chat-luong",
+        initials: "KTDB",
+      },
+      {
+        name: "Phòng Quan hệ Quốc tế",
+        description: "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
+        href: "/phong/quan-he-quoc-te",
+        initials: "QHQT",
+      },
+      {
+        name: "Phòng Quan hệ Doanh nghiệp",
+        description: "Kết nối doanh nghiệp, hợp tác và phát triển.",
+        href: "/phong/quan-he-doanh-nghiep",
+        initials: "QHDN",
+      },
+      {
+        name: "Phòng Thiết bị – Vật tư",
+        description: "Quản lý thiết bị, vật tư và tài sản của trường.",
+        href: "/phong/thiet-bi-vat-tu",
+        initials: "TBVT",
+      },
+      {
+        name: "Phòng Quản trị Cơ sở Vật chất",
+        description: "Quản lý và bảo trì cơ sở vật chất, hạ tầng.",
+        href: "/phong/quan-tri-co-so-vat-chat",
+        initials: "QTCS",
+      },
+      {
+        name: "Phòng Truyền thông",
+        description: "Truyền thông, quảng bá hình ảnh và thông tin.",
+        href: "/phong/truyen-thong",
+        initials: "TT",
+      },
+      {
+        name: "Phòng Thanh tra – Pháp chế",
+        description: "Thanh tra, kiểm tra và đảm bảo pháp chế.",
+        href: "/phong/thanh-tra-phap-che",
+        initials: "TTPC",
+      },
+      {
+        name: "Ban Quản lý KTX",
+        description: "Quản lý ký túc xá và dịch vụ sinh viên.",
+        href: "/ban/quan-ly-ktx",
+        initials: "QLKTX",
+      },
+      {
+        name: "Thư viện",
+        description: "Quản lý tài liệu, sách và không gian học tập.",
+        href: "/thu-vien",
+        initials: "TV",
+      },
+      {
+        name: "Trạm Y tế",
+        description: "Chăm sóc sức khỏe và y tế cho sinh viên, cán bộ.",
+        href: "/tram-y-te",
+        initials: "YT",
+      },
+      {
+        name: "Ban An ninh Trật tự",
+        description: "Đảm bảo an ninh, trật tự và an toàn trong trường.",
+        href: "/ban/an-ninh-trat-tu",
+        initials: "ANTT",
+      },
+    ],
+  },
+  {
+    title: "Trung Tâm",
+    items: [
+      {
+        name: "Trung tâm Tin học",
+        description: "Đào tạo và hỗ trợ công nghệ thông tin, tin học.",
+        href: "/trung-tam/tin-hoc",
+        initials: "TH",
+      },
+      {
+        name: "Trung tâm Kỹ thuật Tổng hợp",
+        description: "Đào tạo kỹ thuật tổng hợp và thực hành.",
+        href: "/trung-tam/ky-thuat-tong-hop",
+        initials: "KTT",
+      },
+      {
+        name: "Trung tâm Ngoại ngữ",
+        description: "Đào tạo ngoại ngữ, chứng chỉ quốc tế và giao lưu văn hóa.",
+        href: "/trung-tam/ngoai-ngu",
+        initials: "NN",
+      },
+      {
+        name: "Trung tâm Phát triển Ngôn ngữ",
+        description: "Phát triển kỹ năng ngôn ngữ và giao tiếp.",
+        href: "/trung-tam/phat-trien-ngon-ngu",
+        initials: "PTNN",
+      },
+      {
+        name: "Trung tâm Nghiên cứu và Ứng dụng Kỹ thuật Xây dựng",
+        description: "Nghiên cứu và ứng dụng kỹ thuật xây dựng.",
+        href: "/trung-tam/nghien-cuu-ung-dung-ky-thuat-xay-dung",
+        initials: "NCUD",
+      },
+      {
+        name: "Trung tâm Việt – Đức",
+        description: "Hợp tác và đào tạo theo mô hình Việt – Đức.",
+        href: "/trung-tam/viet-duc",
+        initials: "VD",
+      },
+      {
+        name: "Trung tâm Hướng nghiệp và Đào tạo Việt – Nhật",
+        description: "Hướng nghiệp và đào tạo theo mô hình Việt – Nhật.",
+        href: "/trung-tam/huong-nghiep-viet-nhat",
+        initials: "HNVN",
+      },
+      {
+        name: "Trung tâm Kỹ thuật và Công nghệ Môi trường",
+        description: "Nghiên cứu và ứng dụng công nghệ môi trường.",
+        href: "/trung-tam/ky-thuat-cong-nghe-moi-truong",
+        initials: "KTCNMT",
+      },
+      {
+        name: "Trung tâm Đào tạo Ngắn hạn",
+        description: "Đào tạo ngắn hạn, bồi dưỡng chuyên môn và chứng chỉ.",
+        href: "/trung-tam/dao-tao-ngan-han",
+        initials: "DTNH",
+      },
+      {
+        name: "Trung tâm Tư vấn Thiết kế và Chế tạo Thiết bị Công nghiệp",
+        description: "Tư vấn, thiết kế và chế tạo thiết bị công nghiệp.",
+        href: "/trung-tam/tu-van-thiet-ke-che-tao",
+        initials: "TVTK",
+      },
+      {
+        name: "Trung tâm Nghiên cứu và Chuyển giao Công nghệ",
+        description: "Nghiên cứu khoa học, chuyển giao công nghệ và đổi mới sáng tạo.",
+        href: "/trung-tam/nghien-cuu-chuyen-giao-cong-nghe",
+        initials: "NCCG",
+      },
+      {
+        name: "Trường Trung học Kỹ thuật Thực hành",
+        description: "Đào tạo trung học kỹ thuật thực hành.",
+        href: "/truong/trung-hoc-ky-thuat-thuc-hanh",
+        initials: "THKT",
+      },
+      {
+        name: "Trung tâm Hàn ngữ Học đường A-UTE",
+        description: "Đào tạo tiếng Hàn và văn hóa Hàn Quốc.",
+        href: "/trung-tam/han-ngu-a-ute",
+        initials: "HN",
+      },
+      {
+        name: "Trung tâm Nghiên cứu Năng lượng Tái tạo",
+        description: "Nghiên cứu và phát triển năng lượng tái tạo.",
+        href: "/trung-tam/nghien-cuu-nang-luong-tai-tao",
+        initials: "NCNL",
+      },
+      {
+        name: "Trung tâm Robot Thông minh",
+        description: "Nghiên cứu và phát triển robot thông minh.",
+        href: "/trung-tam/robot-thong-minh",
+        initials: "RTM",
+      },
+      {
+        name: "Trung tâm Dạy học số",
+        description: "Phát triển và ứng dụng công nghệ dạy học số.",
+        href: "/trung-tam/day-hoc-so",
+        initials: "DHS",
+      },
+      {
+        name: "Trung tâm Sáng tạo Khởi nghiệp và Chuyển giao Công nghệ",
+        description: "Hỗ trợ khởi nghiệp, sáng tạo và chuyển giao công nghệ.",
+        href: "/trung-tam/sang-tao-khoi-nghiep",
+        initials: "STKN",
+      },
+      {
+        name: "Trung tâm Thông tin – Máy tính",
+        description: "Quản lý thông tin, máy tính và hệ thống IT.",
+        href: "/trung-tam/thong-tin-may-tinh",
+        initials: "TTMT",
+      },
+      {
+        name: "Trung tâm Công nghệ Phần mềm",
+        description: "Phát triển và ứng dụng công nghệ phần mềm.",
+        href: "/trung-tam/cong-nghe-phan-mem",
+        initials: "CNPM",
+      },
+      {
+        name: "Trung tâm Giáo dục Thể chất",
+        description: "Đào tạo và phát triển thể chất, thể thao.",
+        href: "/trung-tam/giao-duc-the-chat",
+        initials: "GDTC",
+      },
+      {
+        name: "Trung tâm Giáo dục Quốc phòng và An ninh",
+        description: "Đào tạo quốc phòng và an ninh cho sinh viên.",
+        href: "/trung-tam/giao-duc-quoc-phong-an-ninh",
+        initials: "GDQP",
+      },
+    ],
+  },
+  {
+    title: "Tổ Chức Đoàn Thể",
+    items: [
+      {
+        name: "Đoàn Thanh niên",
+        description: "Tổ chức các hoạt động thanh niên, tình nguyện và phong trào.",
+        href: "/doan-thanh-nien",
+        initials: "YOUTH",
+      },
+      {
+        name: "Hội Sinh viên",
+        description: "Đại diện quyền lợi sinh viên, tổ chức hoạt động và sự kiện.",
+        href: "/hoi-sinh-vien",
+        initials: "SVU",
+      },
+      {
+        name: "Công Đoàn",
+        description: "Bảo vệ quyền lợi cán bộ, tổ chức hoạt động đoàn thể.",
+        href: "/cong-doan",
+        initials: "UNION",
+      },
+    ],
+  },
+];
 
 const NAVIGATION = {
   left: [
@@ -374,150 +728,16 @@ const FEATURE_CONTENT: Record<string, FeatureContent> = {
     href: "/tuyen-sinh/dai-hoc",
     cta: "Xem thông tin tuyển sinh",
   },
+  "Khu vực": {
+    image: "/news/hoi-thao-ute.jpg",
+    badge: "Đơn vị HCMUTE",
+    title: "Khám phá các đơn vị trực thuộc",
+    description:
+      "Tìm hiểu về các khoa, viện, phòng ban, trung tâm và tổ chức đoàn thể tại HCMUTE.",
+    href: "/khu-vuc",
+    cta: "Xem tất cả đơn vị",
+  },
 };
-
-type AreaItem = {
-  name: string;
-  description: string;
-  href: string;
-  initials?: string;
-};
-
-type AreaGroup = {
-  title: string;
-  items: AreaItem[];
-};
-
-const AREA_GROUPS: AreaGroup[] = [
-  {
-    title: "Khoa Viện",
-    items: [
-      {
-        name: "Khoa Điện - Điện tử",
-        description: "Đào tạo kỹ sư điện, điện tử, viễn thông và tự động hóa.",
-        href: "/khoa/dien-dien-tu",
-        initials: "DEE",
-      },
-      {
-        name: "Khoa Cơ khí Chế tạo",
-        description: "Trọng tâm vào cơ khí, chế tạo máy và công nghệ vật liệu.",
-        href: "/khoa/co-khi",
-        initials: "ME",
-      },
-      {
-        name: "Khoa Công nghệ Thông tin",
-        description: "Các ngành CNTT, khoa học dữ liệu, trí tuệ nhân tạo.",
-        href: "/khoa/cong-nghe-thong-tin",
-        initials: "IT",
-      },
-      {
-        name: "Khoa Kinh tế",
-        description: "Quản lý công nghiệp, kinh tế, logistics và quản trị.",
-        href: "/khoa/kinh-te",
-        initials: "ECO",
-      },
-      {
-        name: "Khoa Xây dựng",
-        description: "Kỹ thuật xây dựng, kiến trúc và quy hoạch đô thị.",
-        href: "/khoa/xay-dung",
-        initials: "CE",
-      },
-      {
-        name: "Khoa Công nghệ Hóa học",
-        description: "Công nghệ hóa học, vật liệu và môi trường.",
-        href: "/khoa/hoa-hoc",
-        initials: "CHE",
-      },
-    ],
-  },
-  {
-    title: "Phòng Ban",
-    items: [
-      {
-        name: "Phòng Đào tạo",
-        description: "Quản lý chương trình đào tạo, lịch học và hồ sơ học vụ.",
-        href: "/phong/dao-tao",
-        initials: "ACA",
-      },
-      {
-        name: "Phòng Công tác sinh viên",
-        description: "Hỗ trợ sinh viên, hoạt động đoàn thể và học bổng.",
-        href: "/phong/cong-tac-sinh-vien",
-        initials: "SV",
-      },
-      {
-        name: "Phòng Hợp tác Quốc tế",
-        description: "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
-        href: "/phong/hop-tac-quoc-te",
-        initials: "IO",
-      },
-      {
-        name: "Phòng Tổ chức Cán bộ",
-        description: "Quản lý nhân sự, tổ chức và phát triển đội ngũ cán bộ.",
-        href: "/phong/to-chuc-can-bo",
-        initials: "HR",
-      },
-      {
-        name: "Phòng Kế hoạch Tài chính",
-        description: "Quản lý ngân sách, kế hoạch và tài chính của trường.",
-        href: "/phong/ke-hoach-tai-chinh",
-        initials: "FIN",
-      },
-    ],
-  },
-  {
-    title: "Trung Tâm",
-    items: [
-      {
-        name: "Trung tâm Thông tin & Truyền thông",
-        description: "Truyền thông, quảng bá hình ảnh và hạ tầng số của trường.",
-        href: "/trung-tam/thong-tin-truyen-thong",
-        initials: "ICT",
-      },
-      {
-        name: "Trung tâm Nghiên cứu & Phát triển",
-        description: "Nghiên cứu khoa học, chuyển giao công nghệ và đổi mới sáng tạo.",
-        href: "/trung-tam/nghien-cuu",
-        initials: "R&D",
-      },
-      {
-        name: "Trung tâm Đào tạo Thường xuyên",
-        description: "Đào tạo ngắn hạn, bồi dưỡng chuyên môn và chứng chỉ.",
-        href: "/trung-tam/dao-tao-thuong-xuyen",
-        initials: "CE",
-      },
-      {
-        name: "Trung tâm Ngoại ngữ",
-        description: "Đào tạo ngoại ngữ, chứng chỉ quốc tế và giao lưu văn hóa.",
-        href: "/trung-tam/ngoai-ngu",
-        initials: "LC",
-      },
-    ],
-  },
-  {
-    title: "Tổ Chức Đoàn Thể",
-    items: [
-      {
-        name: "Đoàn Thanh niên",
-        description: "Tổ chức các hoạt động thanh niên, tình nguyện và phong trào.",
-        href: "/doan-thanh-nien",
-        initials: "YOUTH",
-      },
-      {
-        name: "Hội Sinh viên",
-        description: "Đại diện quyền lợi sinh viên, tổ chức hoạt động và sự kiện.",
-        href: "/hoi-sinh-vien",
-        initials: "SVU",
-      },
-      {
-        name: "Công Đoàn",
-        description: "Bảo vệ quyền lợi cán bộ, tổ chức hoạt động đoàn thể.",
-        href: "/cong-doan",
-        initials: "UNION",
-      },
-    ],
-  },
-];
 
 export default function Header() {
   const pathname = usePathname();
@@ -648,22 +868,22 @@ export default function Header() {
     
     if (!item.dropdown) {
       return (
-        <Link
+          <Link
           key={item.label}
-          href={item.href}
+            href={item.href}
           className={`group relative inline-flex items-center whitespace-nowrap text-sm font-medium transition-colors duration-200 ${
             isActive
               ? "text-blue-700"
               : "text-gray-800 hover:text-blue-700"
           }`}
-        >
-          {item.label}
+          >
+            {item.label}
           <span
             className={`pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left rounded bg-blue-700 transition-transform duration-200 ease-out ${
               isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
             }`}
           />
-        </Link>
+          </Link>
       );
     }
 
@@ -699,14 +919,14 @@ export default function Header() {
     items.map((item) => {
       if (!item.dropdown) {
         return (
-          <Link
+        <Link
             key={item.label}
-            href={item.href}
+          href={item.href}
             className="block rounded-lg px-4 py-2 text-base font-medium text-gray-800 transition-colors duration-150 hover:bg-gray-100"
             onClick={() => setIsSheetOpen(false)}
-          >
-            {item.label}
-          </Link>
+        >
+          {item.label}
+        </Link>
         );
       }
 
@@ -833,7 +1053,7 @@ export default function Header() {
                         >
                           <div className="flex flex-col gap-1 text-left">
                             <span className="transition-transform duration-200 group-hover:translate-x-1">
-                              {subItem.title}
+                          {subItem.title}
                             </span>
                             {subItem.description && (
                               <span className="hidden text-xs leading-relaxed text-slate-300 transition-colors duration-200 md:block group-hover:text-white/80">
@@ -850,7 +1070,7 @@ export default function Header() {
                   </ul>
                 </div>
               ))}
-            </div>
+              </div>
 
             <Link
               href={feature.href}
@@ -865,7 +1085,7 @@ export default function Header() {
                   height={240}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
-              </div>
+            </div>
               <div className="mt-6 flex flex-1 flex-col justify-between space-y-4">
                 <span className="inline-flex items-center gap-2 self-start rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-sky-700">
                   {feature.badge}
@@ -880,8 +1100,69 @@ export default function Header() {
                   {feature.cta}
                   <span aria-hidden>→</span>
                 </span>
-              </div>
+          </div>
             </Link>
+      </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderAreaDropdownContent = () => {
+    if (!isAreaOpen) return null;
+
+    const columns = AREA_GROUPS.map((group) => ({
+      title: group.title,
+      items: group.items.map((item) => ({
+        title: item.name,
+        href: item.href,
+      })),
+    }));
+
+  return (
+    <>
+        <div
+          className="fixed inset-0 top-16 z-[90] bg-black/45"
+          onClick={() => setIsAreaOpen(false)}
+        />
+        <div
+          ref={dropdownPanelRef}
+          className="fixed inset-x-0 top-16 z-[110] border-b border-white/15 bg-gradient-to-br from-white/12 via-white/8 to-white/4 px-6 py-14 shadow-[0_35px_160px_-45px_rgba(15,23,42,0.75)] backdrop-blur-2xl sm:px-12 lg:px-20 max-h-[85vh] overflow-y-auto area-dropdown-scroll"
+        >
+          <div className="mx-auto w-full max-w-[1300px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-8">
+              {columns.map((column, columnIndex) => (
+                <div key={`area-column-${columnIndex}`}>
+                  <h3 className="text-sm font-bold uppercase tracking-[0.35em] text-white drop-shadow-md">
+                    {column.title}
+                  </h3>
+                  <ul className="mt-5 space-y-2 max-h-[60vh] overflow-y-auto pr-2 area-dropdown-scroll">
+                    {column.items.map((subItem) => {
+                      const areaItem = AREA_GROUPS.flatMap(g => g.items).find(item => item.name === subItem.title);
+                      return (
+                        <li key={subItem.title} className="group">
+                          <Link
+                            href={subItem.href}
+                            className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-100 transition-all duration-200 hover:bg-white/12 hover:text-white"
+                            onClick={() => setIsAreaOpen(false)}
+                          >
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white transition-colors duration-200 group-hover:bg-white/20">
+                              {areaItem ? renderAreaInitials(areaItem) : subItem.title.charAt(0)}
+                            </span>
+                            <span className="flex-1 transition-transform duration-200 group-hover:translate-x-1">
+                              {subItem.title}
+                            </span>
+                            <span className="text-xs font-semibold text-sky-200 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                              →
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </>
@@ -891,6 +1172,7 @@ export default function Header() {
   return (
     <>
       {renderDropdownContent()}
+      {renderAreaDropdownContent()}
 
       {/* Search Modal */}
       {isSearchOpen && (
@@ -968,45 +1250,8 @@ export default function Header() {
                     aria-haspopup="menu"
                     className="flex items-center justify-center rounded-full border border-slate-200 p-2 text-xs font-medium text-slate-700 transition-colors duration-150 hover:border-sky-200 hover:text-sky-700 focus:outline-none"
                   >
-                    <MapPin size={16} className="opacity-80" />
+                    <Globe size={16} className="opacity-80" />
                   </button>
-
-                  {isAreaOpen && (
-                    <div className="absolute right-0 z-[110] mt-3 w-96 rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200">
-                      <div className="max-h-[420px] overflow-y-auto p-5">
-                        {AREA_GROUPS.map((group) => (
-                          <div key={group.title} className="mb-5 last:mb-0">
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                              {group.title}
-                            </p>
-                            <ul className="mt-3 space-y-2">
-                              {group.items.map((area) => (
-                                <li key={area.name}>
-                                  <Link
-                                    href={area.href}
-                                    onClick={() => setIsAreaOpen(false)}
-                                    className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors duration-150 hover:bg-slate-100"
-                                  >
-                                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-600">
-                                      {renderAreaInitials(area)}
-                                    </span>
-                                    <div className="flex flex-col">
-                                      <span className="text-sm font-semibold text-slate-900">
-                                        {area.name}
-                                      </span>
-                                      <span className="text-xs text-slate-500">
-                                        {area.description}
-                                      </span>
-                                    </div>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 <div className="relative" ref={languageRef}>
@@ -1074,7 +1319,7 @@ export default function Header() {
               </button>
             </div>
           </nav>
-        </div>
+          </div>
       </header>
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -1083,12 +1328,12 @@ export default function Header() {
             <SheetTitle className="text-left text-base font-semibold text-gray-900">
               Menu
             </SheetTitle>
-            <button
+              <button
               type="button"
-              onClick={() => setIsSheetOpen(false)}
+                onClick={() => setIsSheetOpen(false)}
               className="rounded-full border border-gray-200 p-2 text-gray-600 transition-colors duration-150 hover:border-gray-300 hover:text-gray-900"
-            >
-            </button>
+              >
+              </button>
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto">

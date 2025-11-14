@@ -69,9 +69,9 @@ export default function PartnerLogos() {
           <div className="pointer-events-none absolute inset-y-0 left-0 h-full w-1/3 bg-gradient-to-r from-gray-50"></div>
           <div className="pointer-events-none absolute inset-y-0 right-0 h-full w-1/3 bg-gradient-to-l from-gray-50"></div>
         </div>
-        {/* Company Logos Row - Right to Left */}
+        {/* Company Logos Row - Left to Right */}
         <div className="relative">
-          <Marquee reverse className="[--duration:40s]">
+          <Marquee className="[--duration:40s]">
             {companyLogos.map((logo, idx) => (
               <Image
                 key={idx}

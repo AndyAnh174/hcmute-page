@@ -54,7 +54,7 @@ export function MagicCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative rounded-2xl border border-gray-200 bg-white p-8 transition-shadow duration-300 hover:shadow-xl",
+        "relative rounded-2xl bg-white transition-shadow duration-300",
         className
       )}
     >

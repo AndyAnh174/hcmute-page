@@ -66,28 +66,7 @@ export default function UniversityLeadership() {
 
       {/* Main Content */}
       <div className="flex flex-col justify-end justify-center pt-16 relative">
-        {/* Navigation Arrows - Positioned within container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-40 mb-4">
-          <div className="flex justify-end items-center gap-2">
-            <button
-              onClick={prevSlide}
-              className="bg-white hover:bg-gray-50 rounded-full p-2.5 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200"
-              aria-label="Previous leader"
-            >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
-            </button>
-
-            <button
-              onClick={nextSlide}
-              className="bg-white hover:bg-gray-50 rounded-full p-2.5 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200"
-              aria-label="Next leader"
-            >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
-            </button>
-          </div>
-        </div>
-
-        <div className="flex justify-center w-screen bg-blue-600 md:h-90 relative">
+        <div className="flex justify-center w-screen bg-blue-600 md:h-90 relative group">
           <motion.div
             className="absolute inset-0 w-full h-full object-cover"
             initial={{ opacity: 0, x: 50 }}
@@ -108,6 +87,23 @@ export default function UniversityLeadership() {
 
           {/* Content overlay */}
           <div className="relative rounded-2xl z-10 h-full flex items-center">
+            {/* Navigation Buttons - Hidden by default, show on hover */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg border border-gray-200 transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110"
+              aria-label="Previous leader"
+            >
+              <ChevronLeft className="w-6 h-6 text-gray-700" />
+            </button>
+
+            <button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg border border-gray-200 transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110"
+              aria-label="Next leader"
+            >
+              <ChevronRight className="w-6 h-6 text-gray-700" />
+            </button>
+
             <div className="px-4 sm:px-6 lg:px-8 w-full">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center pt-8 pb-12 lg:py-0 max-w-7xl mx-auto">
                 {/* Left side - Text */}
