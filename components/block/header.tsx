@@ -871,7 +871,7 @@ export default function Header() {
           <Link
           key={item.label}
             href={item.href}
-          className={`group relative inline-flex items-center whitespace-nowrap text-sm font-medium transition-colors duration-200 ${
+          className={`group relative inline-flex items-center whitespace-nowrap text-sm font-semibold transition-colors duration-200 ${
             isActive
               ? "text-blue-700"
               : "text-gray-800 hover:text-blue-700"
@@ -879,7 +879,7 @@ export default function Header() {
           >
             {item.label}
           <span
-            className={`pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left rounded bg-blue-700 transition-transform duration-200 ease-out ${
+            className={`pointer-events-none absolute inset-x-0 bottom-[-4px] block h-0.5 origin-left bg-blue-700 transition-transform duration-200 ease-out ${
               isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
             }`}
           />
@@ -896,7 +896,7 @@ export default function Header() {
           onClick={() => handleToggleDropdown(item.label)}
           aria-expanded={isOpen}
           aria-haspopup="menu"
-          className={`group relative inline-flex items-center whitespace-nowrap text-sm font-medium transition-colors duration-200 focus:outline-none ${
+          className={`group relative inline-flex items-center whitespace-nowrap text-sm font-semibold transition-colors duration-200 focus:outline-none ${
             isActive || isOpen
               ? "text-blue-700"
               : "text-gray-800 hover:text-blue-700"
@@ -904,7 +904,7 @@ export default function Header() {
         >
           {item.label}
           <span
-            className={`pointer-events-none absolute inset-x-1 bottom-0 block h-0.5 origin-left rounded bg-blue-700 transition-transform duration-200 ease-out ${
+            className={`pointer-events-none absolute inset-x-0 bottom-[-4px] block h-0.5 origin-left bg-blue-700 transition-transform duration-200 ease-out ${
               isActive || isOpen
                 ? "scale-x-100"
                 : "scale-x-0 group-hover:scale-x-100"
@@ -1038,7 +1038,7 @@ export default function Header() {
             <div className={`grid gap-x-12 gap-y-8 ${columnLayoutClass}`}>
               {columns.map((column, columnIndex) => (
                 <div key={`${activeDropdownItem.label}-column-${columnIndex}`}>
-                  <h3 className="text-sm font-bold uppercase tracking-[0.35em] text-white drop-shadow-md">
+                  <h3 className="text-2xl font-semibold font-work-sans uppercase tracking-[0.1em] text-white/95 drop-shadow-md">
                     {column.title}
                   </h3>
                   <ul className="mt-5 space-y-4">
@@ -1046,17 +1046,15 @@ export default function Header() {
                       <li key={subItem.title} className="group">
                         <Link
                           href={subItem.href}
-                          className={`flex items-center justify-between rounded-xl px-3 py-3 text-sm text-slate-100 transition-all duration-200 hover:bg-white/12 hover:text-white ${
-                            subItem.bold ? "font-semibold text-white" : "font-normal"
-                          }`}
+                          className="flex items-center justify-between rounded-xl px-3 py-3 text-slate-100 transition-all duration-200 hover:bg-white/12 hover:text-white"
                           onClick={() => setOpenDropdown(null)}
                         >
-                          <div className="flex flex-col gap-1 text-left">
-                            <span className="transition-transform duration-200 group-hover:translate-x-1">
+                          <div className="flex flex-col gap-1.5 text-left">
+                            <span className="text-sm font-semibold text-white transition-transform duration-200 group-hover:translate-x-1">
                           {subItem.title}
                             </span>
                             {subItem.description && (
-                              <span className="hidden text-xs leading-relaxed text-slate-300 transition-colors duration-200 md:block group-hover:text-white/80">
+                              <span className="hidden text-base leading-relaxed text-slate-300 transition-colors duration-200 md:block group-hover:text-white/80">
                                 {subItem.description}
                               </span>
                             )}
@@ -1090,13 +1088,13 @@ export default function Header() {
                 <span className="inline-flex items-center gap-2 self-start rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors duration-300 group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-sky-700">
                   {feature.badge}
                 </span>
-                <h4 className="text-lg font-semibold text-white transition-colors duration-300 group-hover:text-slate-900">
+                <h4 className="text-xl font-semibold text-white transition-colors duration-300 group-hover:text-slate-900">
                   {feature.title}
                 </h4>
-                <p className="text-sm leading-relaxed text-white/80 transition-colors duration-300 group-hover:text-slate-600">
+                <p className="text-base leading-relaxed text-white/80 transition-colors duration-300 group-hover:text-slate-600">
                   {feature.description}
                 </p>
-                <span className="inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors duration-300 group-hover:text-sky-600">
+                <span className="inline-flex items-center gap-2 text-base font-semibold text-white transition-colors duration-300 group-hover:text-sky-600">
                   {feature.cta}
                   <span aria-hidden>→</span>
                 </span>
@@ -1133,7 +1131,7 @@ export default function Header() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-8">
               {columns.map((column, columnIndex) => (
                 <div key={`area-column-${columnIndex}`}>
-                  <h3 className="text-sm font-bold uppercase tracking-[0.35em] text-white drop-shadow-md">
+                  <h3 className="text-sm font-serif font-medium uppercase tracking-[0.4em] text-white/95 drop-shadow-md">
                     {column.title}
                   </h3>
                   <ul className="mt-5 space-y-2 max-h-[60vh] overflow-y-auto pr-2 area-dropdown-scroll">

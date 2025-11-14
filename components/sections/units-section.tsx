@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import Link from "next/link";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { MagicCard } from "@/components/ui/magic-card";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 interface Unit {
   name: string;
@@ -435,17 +436,15 @@ export default function UnitsSection() {
                   gradientColor="from-blue-500 via-blue-600 to-blue-700"
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <span className="text-white font-bold text-2xl">
-                        {group.items.length}
-                      </span>
+                    <div className="mb-6">
+                      <NumberTicker
+                        value={group.items.length}
+                        className="text-blue-900 text-5xl font-bold"
+                      />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300 tracking-tight">
                       {group.title}
                     </h3>
-                    <p className="text-sm font-medium text-gray-500">
-                      {group.items.length} đơn vị
-                    </p>
                   </div>
                 </MagicCard>
               </motion.div>
@@ -480,9 +479,6 @@ export default function UnitsSection() {
                     <h3 className="text-3xl font-bold text-gray-900 mb-1">
                       {selectedGroup.title}
                     </h3>
-                    <p className="text-sm text-gray-500">
-                      {selectedGroup.items.length} đơn vị
-                    </p>
                   </div>
                   <button
                     onClick={() => setSelectedGroup(null)}

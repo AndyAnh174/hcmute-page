@@ -174,15 +174,15 @@ export default function CoreValues() {
             <div className="flex justify-center gap-4 mt-6">
               <button
                 onClick={prevSlide}
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-white border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 shadow-sm hover:shadow-md"
+                className="bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-all duration-200"
               >
-                <ChevronLeft className="w-5 h-5 text-gray-600 hover:text-blue-600" />
+                <ChevronLeft className="w-6 h-6 text-gray-700" />
               </button>
               <button
                 onClick={nextSlide}
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-white border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 shadow-sm hover:shadow-md"
+                className="bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-all duration-200"
               >
-                <ChevronRight className="w-5 h-5 text-gray-600 hover:text-blue-600" />
+                <ChevronRight className="w-6 h-6 text-gray-700" />
               </button>
             </div>
           </motion.div>

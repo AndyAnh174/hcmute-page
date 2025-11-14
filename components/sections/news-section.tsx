@@ -248,9 +248,6 @@ export default function NewsSection() {
                         <span>Xem chi tiết</span>
                         <ArrowRight className="w-5 h-5" />
                       </div>
-                      <p className="text-sm text-white/80 text-center max-w-xs px-4 line-clamp-2">
-                        {item.excerpt}
-                      </p>
                     </div>
                   </div>
                 </div>

@@ -67,8 +67,6 @@ export default function HeroCarousel() {
           keyboard: "global",
           cover: true,
           height: "100vh",
-          arrowPath:
-            "M 12.5 0 L 0 12.5 L 12.5 25 M 0 12.5 L 25 12.5",
         }}
         hasTrack={false}
         className="h-full"
