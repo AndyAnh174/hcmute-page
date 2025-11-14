@@ -21,7 +21,7 @@ interface UnitGroup {
 
 const UNIT_GROUPS: UnitGroup[] = [
   {
-    title: "Khối khoa",
+    title: "Khoa Viện",
     items: [
       {
         name: "Khoa Điện - Điện tử",
@@ -62,7 +62,7 @@ const UNIT_GROUPS: UnitGroup[] = [
     ],
   },
   {
-    title: "Phòng ban & Trung tâm",
+    title: "Phòng Ban",
     items: [
       {
         name: "Phòng Đào tạo",
@@ -77,6 +77,29 @@ const UNIT_GROUPS: UnitGroup[] = [
         initials: "SV",
       },
       {
+        name: "Phòng Hợp tác Quốc tế",
+        description: "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
+        href: "/phong/hop-tac-quoc-te",
+        initials: "IO",
+      },
+      {
+        name: "Phòng Tổ chức Cán bộ",
+        description: "Quản lý nhân sự, tổ chức và phát triển đội ngũ cán bộ.",
+        href: "/phong/to-chuc-can-bo",
+        initials: "HR",
+      },
+      {
+        name: "Phòng Kế hoạch Tài chính",
+        description: "Quản lý ngân sách, kế hoạch và tài chính của trường.",
+        href: "/phong/ke-hoach-tai-chinh",
+        initials: "FIN",
+      },
+    ],
+  },
+  {
+    title: "Trung Tâm",
+    items: [
+      {
         name: "Trung tâm Thông tin & Truyền thông",
         description: "Truyền thông, quảng bá hình ảnh và hạ tầng số của trường.",
         href: "/trung-tam/thong-tin-truyen-thong",
@@ -89,16 +112,39 @@ const UNIT_GROUPS: UnitGroup[] = [
         initials: "R&D",
       },
       {
-        name: "Phòng Hợp tác Quốc tế",
-        description: "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
-        href: "/phong/hop-tac-quoc-te",
-        initials: "IO",
-      },
-      {
         name: "Trung tâm Đào tạo Thường xuyên",
         description: "Đào tạo ngắn hạn, bồi dưỡng chuyên môn và chứng chỉ.",
         href: "/trung-tam/dao-tao-thuong-xuyen",
         initials: "CE",
+      },
+      {
+        name: "Trung tâm Ngoại ngữ",
+        description: "Đào tạo ngoại ngữ, chứng chỉ quốc tế và giao lưu văn hóa.",
+        href: "/trung-tam/ngoai-ngu",
+        initials: "LC",
+      },
+    ],
+  },
+  {
+    title: "Tổ Chức Đoàn Thể",
+    items: [
+      {
+        name: "Đoàn Thanh niên",
+        description: "Tổ chức các hoạt động thanh niên, tình nguyện và phong trào.",
+        href: "/doan-thanh-nien",
+        initials: "YOUTH",
+      },
+      {
+        name: "Hội Sinh viên",
+        description: "Đại diện quyền lợi sinh viên, tổ chức hoạt động và sự kiện.",
+        href: "/hoi-sinh-vien",
+        initials: "SVU",
+      },
+      {
+        name: "Công Đoàn",
+        description: "Bảo vệ quyền lợi cán bộ, tổ chức hoạt động đoàn thể.",
+        href: "/cong-doan",
+        initials: "UNION",
       },
     ],
   },
@@ -207,24 +253,44 @@ export default function UnitsSection() {
                 Tất cả
               </button>
               <button
-                onClick={() => setSelectedGroup("Khối khoa")}
+                onClick={() => setSelectedGroup("Khoa Viện")}
                 className={`px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm font-medium ${
-                  selectedGroup === "Khối khoa"
+                  selectedGroup === "Khoa Viện"
                     ? "bg-blue-600 text-white border-blue-600 shadow-md"
                     : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}
               >
-                Khoa
+                Khoa Viện
               </button>
               <button
-                onClick={() => setSelectedGroup("Phòng ban & Trung tâm")}
+                onClick={() => setSelectedGroup("Phòng Ban")}
                 className={`px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm font-medium ${
-                  selectedGroup === "Phòng ban & Trung tâm"
+                  selectedGroup === "Phòng Ban"
                     ? "bg-blue-600 text-white border-blue-600 shadow-md"
                     : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}
               >
-                Phòng ban
+                Phòng Ban
+              </button>
+              <button
+                onClick={() => setSelectedGroup("Trung Tâm")}
+                className={`px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm font-medium ${
+                  selectedGroup === "Trung Tâm"
+                    ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                }`}
+              >
+                Trung Tâm
+              </button>
+              <button
+                onClick={() => setSelectedGroup("Tổ Chức Đoàn Thể")}
+                className={`px-5 py-3 rounded-xl border transition-all flex items-center gap-2 text-sm font-medium ${
+                  selectedGroup === "Tổ Chức Đoàn Thể"
+                    ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                }`}
+              >
+                Đoàn Thể
               </button>
             </div>
           </div>
@@ -252,7 +318,7 @@ export default function UnitsSection() {
                 {/* Left Arrow */}
                 <button
                   onClick={() => handleScroll(groupIndex, "left")}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2.5 shadow-lg border border-gray-200 hover:bg-gray-50 hover:scale-110 transition-all opacity-0 group-hover/container:opacity-100"
+                  className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2.5 shadow-lg border border-gray-200 hover:bg-gray-50 hover:scale-110 transition-all opacity-0 group-hover/container:opacity-100"
                   aria-label="Scroll left"
                 >
                   <ChevronLeft className="w-5 h-5 text-gray-700" />
@@ -263,7 +329,7 @@ export default function UnitsSection() {
                   ref={(el) => {
                     scrollRefs.current[groupIndex] = el;
                   }}
-                  className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth pb-4 px-2"
+                  className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth pb-4"
                   style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                   {group.items.map((unit, index) => (
@@ -325,7 +391,7 @@ export default function UnitsSection() {
                 {/* Right Arrow */}
                 <button
                   onClick={() => handleScroll(groupIndex, "right")}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2.5 shadow-lg border border-gray-200 hover:bg-gray-50 hover:scale-110 transition-all opacity-0 group-hover/container:opacity-100"
+                  className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2.5 shadow-lg border border-gray-200 hover:bg-gray-50 hover:scale-110 transition-all opacity-0 group-hover/container:opacity-100"
                   aria-label="Scroll right"
                 >
                   <ChevronRight className="w-5 h-5 text-gray-700" />

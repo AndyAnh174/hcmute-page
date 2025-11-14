@@ -390,7 +390,7 @@ type AreaGroup = {
 
 const AREA_GROUPS: AreaGroup[] = [
   {
-    title: "Khối khoa",
+    title: "Khoa Viện",
     items: [
       {
         name: "Khoa Điện - Điện tử",
@@ -416,10 +416,22 @@ const AREA_GROUPS: AreaGroup[] = [
         href: "/khoa/kinh-te",
         initials: "ECO",
       },
+      {
+        name: "Khoa Xây dựng",
+        description: "Kỹ thuật xây dựng, kiến trúc và quy hoạch đô thị.",
+        href: "/khoa/xay-dung",
+        initials: "CE",
+      },
+      {
+        name: "Khoa Công nghệ Hóa học",
+        description: "Công nghệ hóa học, vật liệu và môi trường.",
+        href: "/khoa/hoa-hoc",
+        initials: "CHE",
+      },
     ],
   },
   {
-    title: "Phòng ban & trung tâm",
+    title: "Phòng Ban",
     items: [
       {
         name: "Phòng Đào tạo",
@@ -434,16 +446,74 @@ const AREA_GROUPS: AreaGroup[] = [
         initials: "SV",
       },
       {
+        name: "Phòng Hợp tác Quốc tế",
+        description: "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
+        href: "/phong/hop-tac-quoc-te",
+        initials: "IO",
+      },
+      {
+        name: "Phòng Tổ chức Cán bộ",
+        description: "Quản lý nhân sự, tổ chức và phát triển đội ngũ cán bộ.",
+        href: "/phong/to-chuc-can-bo",
+        initials: "HR",
+      },
+      {
+        name: "Phòng Kế hoạch Tài chính",
+        description: "Quản lý ngân sách, kế hoạch và tài chính của trường.",
+        href: "/phong/ke-hoach-tai-chinh",
+        initials: "FIN",
+      },
+    ],
+  },
+  {
+    title: "Trung Tâm",
+    items: [
+      {
         name: "Trung tâm Thông tin & Truyền thông",
         description: "Truyền thông, quảng bá hình ảnh và hạ tầng số của trường.",
         href: "/trung-tam/thong-tin-truyen-thong",
         initials: "ICT",
       },
       {
-        name: "Trung tâm Hợp tác Doanh nghiệp",
-        description: "Kết nối doanh nghiệp, thực tập và giới thiệu việc làm.",
-        href: "/trung-tam/hop-tac-doanh-nghiep",
-        initials: "CEC",
+        name: "Trung tâm Nghiên cứu & Phát triển",
+        description: "Nghiên cứu khoa học, chuyển giao công nghệ và đổi mới sáng tạo.",
+        href: "/trung-tam/nghien-cuu",
+        initials: "R&D",
+      },
+      {
+        name: "Trung tâm Đào tạo Thường xuyên",
+        description: "Đào tạo ngắn hạn, bồi dưỡng chuyên môn và chứng chỉ.",
+        href: "/trung-tam/dao-tao-thuong-xuyen",
+        initials: "CE",
+      },
+      {
+        name: "Trung tâm Ngoại ngữ",
+        description: "Đào tạo ngoại ngữ, chứng chỉ quốc tế và giao lưu văn hóa.",
+        href: "/trung-tam/ngoai-ngu",
+        initials: "LC",
+      },
+    ],
+  },
+  {
+    title: "Tổ Chức Đoàn Thể",
+    items: [
+      {
+        name: "Đoàn Thanh niên",
+        description: "Tổ chức các hoạt động thanh niên, tình nguyện và phong trào.",
+        href: "/doan-thanh-nien",
+        initials: "YOUTH",
+      },
+      {
+        name: "Hội Sinh viên",
+        description: "Đại diện quyền lợi sinh viên, tổ chức hoạt động và sự kiện.",
+        href: "/hoi-sinh-vien",
+        initials: "SVU",
+      },
+      {
+        name: "Công Đoàn",
+        description: "Bảo vệ quyền lợi cán bộ, tổ chức hoạt động đoàn thể.",
+        href: "/cong-doan",
+        initials: "UNION",
       },
     ],
   },
