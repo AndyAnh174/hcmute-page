@@ -4,6 +4,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { MagicCard } from "@/components/ui/magic-card";
 import { NumberTicker } from "@/components/ui/number-ticker";
@@ -392,6 +399,7 @@ const itemVariants = {
 
 export default function UnitsSection() {
   const [selectedGroup, setSelectedGroup] = useState<UnitGroup | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <>
@@ -412,13 +420,31 @@ export default function UnitsSection() {
                 ĐƠN VỊ HCMUTE
               </AuroraText>
             </h2>
-            <p className="text-lg text-gray-600 text-start">
-              Khám phá các khoa, viện, phòng ban, trung tâm và tổ chức đoàn thể tại HCMUTE
-            </p>
+            {/* Tab Navigation */}
+            <div className="flex justify-center mt-8">
+              <div className="inline-flex items-center gap-0 bg-gray-100 rounded-lg px-1 py-1">
+                {UNIT_GROUPS.map((group, index) => (
+                  <button
+                    key={group.title}
+                    onClick={() => {
+                      setActiveTab(index);
+                    }}
+                    className={`px-6 py-2 rounded-md text-sm transition-all duration-200 ${
+                      activeTab === index
+                        ? "bg-white text-gray-900 font-bold"
+                        : "text-gray-600 hover:text-gray-900 font-normal"
+                    }`}
+                  >
+                    {group.title}
+                  </button>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
+          {/* Summary Cards - 4 cards showing counts */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -427,8 +453,11 @@ export default function UnitsSection() {
             {UNIT_GROUPS.map((group, index) => (
               <motion.div
                 key={group.title}
+                id={`group-${index}`}
                 variants={itemVariants}
-                onClick={() => setSelectedGroup(group)}
+                onClick={() => {
+                  setActiveTab(index);
+                }}
                 className="cursor-pointer group"
               >
                 <MagicCard
@@ -450,6 +479,53 @@ export default function UnitsSection() {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* Carousel for Items */}
+          <div className="mt-8 relative">
+            <Carousel
+              key={activeTab} // Re-render carousel when tab changes
+              opts={{
+                align: "start",
+                loop: false,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {UNIT_GROUPS[activeTab]?.items.map((unit, index) => (
+                  <CarouselItem
+                    key={unit.name}
+                    className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  >
+                    <Link href={unit.href}>
+                      <div className="relative h-48 rounded-xl overflow-hidden group cursor-pointer">
+                        {/* Placeholder image - bạn có thể thay bằng hình ảnh thực tế */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-6xl font-bold text-white/20">
+                              {unit.initials}
+                            </span>
+                          </div>
+                        </div>
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        {/* Content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <h3 className="text-white font-bold text-lg mb-1 line-clamp-2 group-hover:underline">
+                            {unit.name}
+                          </h3>
+                          <p className="text-white/90 text-sm line-clamp-2">
+                            {unit.description}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-12 bg-white hover:bg-gray-100 rounded-full p-2 shadow-lg transition-all duration-200 border-0" />
+              <CarouselNext className="-right-12 bg-white hover:bg-gray-100 rounded-full p-2 shadow-lg transition-all duration-200 border-0" />
+            </Carousel>
+          </div>
         </div>
       </section>
 
