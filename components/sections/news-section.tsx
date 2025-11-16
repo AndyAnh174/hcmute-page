@@ -5,66 +5,7 @@ import { Calendar, ArrowRight, Clock, TrendingUp, Hash } from "lucide-react";
 import Image from "next/image";
 import CardSwap, { Card } from "@/components/ui/card-swap";
 import Link from "next/link";
-
-interface NewsItem {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  image: string;
-  readTime: string;
-  views?: number;
-  tags?: string[];
-}
-
-const newsItems: NewsItem[] = [
-  {
-    id: 101,
-    title: "HCMUTE ký kết hợp tác với Đại học Tokyo - Nhật Bản",
-    excerpt:
-      "Chương trình hợp tác sẽ tạo cơ hội trao đổi sinh viên, giảng viên và phát triển các dự án nghiên cứu chung trong lĩnh vực kỹ thuật và công nghệ.",
-    date: "2024-01-15",
-    category: "Hợp tác quốc tế",
-    image: "/news/hoi-thao-ute.jpg",
-    readTime: "3 phút",
-    views: 245,
-    tags: ["hợp-tác", "quốc-tế", "tokyo"],
-  },
-  {
-    id: 102,
-    title: "Sinh viên HCMUTE đạt giải Nhất cuộc thi Robotics Việt Nam 2024",
-    excerpt:
-      "Đội thi của Khoa Cơ khí đã xuất sắc giành giải Nhất với dự án robot tự động phân loại rác thải thông minh.",
-    date: "2024-01-12",
-    category: "Thành tích sinh viên",
-    image: "/news/giai-nha-robot.jpeg",
-    readTime: "2 phút",
-    views: 189,
-    tags: ["robotics", "giải-thưởng", "sinh-viên"],
-  },
-  {
-    id: 103,
-    title: "Hội thảo quốc tế về AI và IoT trong giáo dục kỹ thuật",
-    excerpt:
-      "Sự kiện quy tụ hơn 200 chuyên gia trong nước và quốc tế thảo luận về xu hướng ứng dụng công nghệ trong đào tạo kỹ thuật.",
-    date: "2024-01-10",
-    category: "Sự kiện",
-    image: "/news/hoi-thao-ute.jpg",
-    readTime: "4 phút",
-    views: 312,
-    tags: ["ai", "iot", "giáo-dục"],
-  },
-];
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-};
+import { newsItems, formatDate } from "@/lib/news-data";
 
 export default function NewsSection() {
   const featured = newsItems[0];
