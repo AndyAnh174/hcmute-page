@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { useRef } from "react";
 import Image from "next/image";
 import { Users, BookOpen, Microscope, Rocket, Award } from "lucide-react";
+import { GridPatternDashed } from "@/components/ui/grid-pattern-dashed";
 
 // Separate component for each content item to fix Rules of Hooks
 function ContentItem({
@@ -19,84 +20,36 @@ function ContentItem({
   smoothProgress: any;
   totalItems: number;
 }) {
-  // Calculate opacity based on scroll position
+  // Calculate opacity based on scroll position - smoother transition
   const opacity = useTransform(
     contentIndex,
     (value: number) => {
       const distance = Math.abs(value - index);
-      return Math.max(0, 1 - distance * 2.5);
+      const isFirst = index === 0;
+      const isLast = index === totalItems - 1;
+      
+      // First and last items stay visible much longer
+      const fadeStart = (isFirst || isLast) ? 0.2 : 0.3;
+      const fadeEnd = (isFirst || isLast) ? 0.6 : 0.8;
+      
+      if (distance < fadeStart) return 1;
+      if (distance < fadeEnd) return 1 - (distance - fadeStart) * (1 / (fadeEnd - fadeStart));
+      return 0;
     }
   );
-
-  // Calculate vertical position
-  const y = useTransform(
-    contentIndex,
-    (value: number) => {
-      const offset = (value - index) * 60;
-      return offset;
-    }
-  );
-
-  // Calculate scale for active content
-  const scale = useTransform(
-    contentIndex,
-    (value: number) => {
-      const distance = Math.abs(value - index);
-      return 1 - distance * 0.1;
-    }
-  );
-
-  // Progress for current section
-  const sectionProgress = useTransform(
-    smoothProgress,
-    [
-      index / totalItems,
-      (index + 1) / totalItems,
-    ],
-    [0, 1]
-  );
-
-  // Border color based on opacity
-  const borderColor = useTransform(
-    opacity,
-    [0, 1],
-    ["rgb(229, 231, 235)", "rgb(17, 24, 39)"]
-  );
-
-  // Box shadow based on opacity
-  const boxShadow = useTransform(
-    opacity,
-    [0, 1],
-    ["0 1px 2px 0 rgb(0 0 0 / 0.05)", "0 4px 6px -1px rgb(0 0 0 / 0.1)"]
-  );
-
-  // Progress bar width
-  const progressWidth = useTransform(sectionProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <motion.div
       className="absolute inset-0"
       style={{
         opacity,
-        y,
-        scale,
       }}
     >
-      <motion.div
-        className="p-6 lg:p-8 bg-white border border-gray-200 shadow-sm transition-all duration-300"
-        style={{
-          borderColor: borderColor,
-          boxShadow: boxShadow,
-        }}
-      >
+      <div className="p-6 lg:p-8 bg-white border border-gray-200 shadow-sm">
         {/* Icon */}
-        <motion.div
-          className={`inline-flex items-center justify-center w-14 h-14 ${content.color} text-white mb-6`}
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
+        <div className={`inline-flex items-center justify-center w-14 h-14 ${content.color} text-white mb-6`}>
           {content.icon}
-        </motion.div>
+        </div>
 
         {/* Title */}
         <h3 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-4 tracking-tight">
@@ -108,16 +61,7 @@ function ContentItem({
           {content.description}
         </p>
 
-        {/* Progress Indicator */}
-        <div className="mt-8 h-0.5 bg-gray-100 overflow-hidden">
-          <motion.div
-            className={`h-full ${content.color}`}
-            style={{
-              width: progressWidth,
-            }}
-          />
-        </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -186,38 +130,101 @@ export default function ScrollSyncSection() {
     offset: ["start start", "end end"],
   });
 
-  // Smooth scroll progress - faster
+  // Smooth scroll progress - smoother
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 150,
-    damping: 25,
+    stiffness: 100,
+    damping: 35,
     restDelta: 0.001,
   });
 
   // Calculate content index based on scroll progress
+  // First and last items take more scroll space
   const contentIndex = useTransform(
     smoothProgress,
-    [0, 1],
-    [0, scrollContents.length - 1]
+    (value: number) => {
+      const totalItems = scrollContents.length;
+      const lastIndex = totalItems - 1;
+      
+      // First 40% of scroll = item 0 (Khoa Học & Công Nghệ)
+      if (value < 0.4) {
+        return value / 0.4 * 0.5; // Map 0-0.4 to 0-0.5
+      }
+      // Last 40% of scroll = last item (Thành tích)
+      if (value > 0.6) {
+        const lastProgress = (value - 0.6) / 0.4;
+        return lastIndex - 0.5 + lastProgress * 0.5; // Map 0.6-1.0 to (lastIndex-0.5) to lastIndex
+      }
+      // Middle 20% for other items
+      const middleProgress = (value - 0.4) / 0.2;
+      return 0.5 + middleProgress * (lastIndex - 1);
+    }
+  );
+
+  // Fade effect when scrolling into/out of section
+  const sectionOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.8, 1],
+    [0, 1, 1, 0]
   );
 
   return (
-    <section ref={containerRef} className="relative min-h-[200vh] lg:min-h-[250vh] py-20 lg:py-32">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={containerRef} className="relative min-h-[400vh] lg:min-h-[500vh] py-20 lg:py-32">
+      <motion.div 
+        className="sticky top-0 h-screen flex items-center overflow-hidden relative"
+        style={{ opacity: sectionOpacity }}
+      >
+        {/* Grid Pattern Background */}
+        <div className="absolute inset-0 opacity-30">
+          <GridPatternDashed />
+        </div>
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Side - Sticky Image */}
-            <motion.div
-              className="relative h-[400px] lg:h-[600px] overflow-hidden border border-gray-200 bg-gray-50"
-              style={{
-                scale: useTransform(smoothProgress, [0, 1], [1, 0.98]),
-              }}
-            >
+            {/* Left Side - Scroll Indicator & Content */}
+            <div className="flex gap-6 lg:gap-8">
+              {/* Scroll Indicator */}
+              <div className="relative w-1 h-[600px] bg-gray-200">
+                <motion.div
+                  className="absolute top-0 left-0 w-full bg-gray-900"
+                  style={{
+                    height: useTransform(smoothProgress, [0, 1], ["0%", "100%"]),
+                  }}
+                />
+              </div>
+
+              {/* Scrolling Content */}
+              <div className="relative flex-1 h-[600px]">
+                {scrollContents.map((content, index) => (
+                  <ContentItem
+                    key={content.id}
+                    content={content}
+                    index={index}
+                    contentIndex={contentIndex}
+                    smoothProgress={smoothProgress}
+                    totalItems={scrollContents.length}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Right Side - Sticky Image */}
+            <div className="relative h-[400px] lg:h-[600px] overflow-hidden border border-gray-200 bg-gray-50">
               {scrollContents.map((content, index) => {
                 const imageOpacity = useTransform(
                   contentIndex,
-                  (value) => {
+                  (value: number) => {
                     const distance = Math.abs(value - index);
-                    return Math.max(0, 1 - distance * 1.5);
+                    const totalItems = scrollContents.length;
+                    const isFirst = index === 0;
+                    const isLast = index === totalItems - 1;
+                    
+                    // First and last items stay visible much longer
+                    const fadeStart = (isFirst || isLast) ? 0.2 : 0.3;
+                    const fadeEnd = (isFirst || isLast) ? 0.6 : 0.8;
+                    
+                    if (distance < fadeStart) return 1;
+                    if (distance < fadeEnd) return 1 - (distance - fadeStart) * (1 / (fadeEnd - fadeStart));
+                    return 0;
                   }
                 );
 
@@ -239,24 +246,10 @@ export default function ScrollSyncSection() {
                   </motion.div>
                 );
               })}
-            </motion.div>
-
-            {/* Right Side - Scrolling Content */}
-            <div className="relative h-[600px]">
-              {scrollContents.map((content, index) => (
-                <ContentItem
-                  key={content.id}
-                  content={content}
-                  index={index}
-                  contentIndex={contentIndex}
-                  smoothProgress={smoothProgress}
-                  totalItems={scrollContents.length}
-                />
-              ))}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
