@@ -293,3 +293,67 @@
 .area-dropdown-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }
+
+/* Custom Scrollbar for Feature Showcase */
+.feature-scroll-container {
+  direction: ltr; /* Đảm bảo scrollbar nằm bên phải */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f1f1;
+}
+
+.feature-scroll-container::-webkit-scrollbar {
+  width: 8px;
+  position: absolute;
+  right: 0;
+}
+
+.feature-scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  margin: 4px 0;
+}
+
+.feature-scroll-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.feature-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* News Content Styles */
+.news-content {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.news-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.news-content p {
+  margin-bottom: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.news-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.news-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.75rem;
+}
+
+.news-content strong {
+  font-weight: 600;
+  color: #111827;
+}
