@@ -57,7 +57,7 @@ export default function UniversityLeadership() {
               HCMUTE
             </AuroraText>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 text-nowrap max-w-3xl mx-auto leading-relaxed">
             Đội ngũ lãnh đạo giàu kinh nghiệm, tận tâm với sự nghiệp giáo dục và
             phát triển nhân tài
           </p>
@@ -70,14 +70,19 @@ export default function UniversityLeadership() {
         <div className="absolute top-0 left-8 z-30 flex space-x-2">
           <button
             onClick={prevSlide}
-            className="bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-all duration-200"
+            className={`bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-bg duration-200 ${
+              currentSlide === 0 ? "invisible" : "visible"
+            }`}
           >
             <ChevronLeft className="w-6 h-6 text-gray-700" />
           </button>
-
           <button
             onClick={nextSlide}
-            className="bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-all duration-200"
+            className={`bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-bg duration-200 ${
+              currentSlide === leadershipData.length - 1
+                ? "invisible"
+                : "visible"
+            }`}
           >
             <ChevronRight className="w-6 h-6 text-gray-700" />
           </button>

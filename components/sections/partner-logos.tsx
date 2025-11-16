@@ -1,9 +1,8 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Marquee } from "@/components/ui/marquee";
-import { Globe } from "@/components/ui/globe";
-import Image from "next/image";
+import { Globe } from "../ui/globe";
 
 const universityLogos = [
   "/linked-university/Untitled-1-01.png",
@@ -30,9 +29,9 @@ const companyLogos = [
 
 export default function PartnerLogos() {
   return (
-    <section className="py-20 bg-white overflow-hidden relative">
-      <div className="max-w-xl size-full opacity-[.4] absolute top-0 left-[-10rem]">
-        <Globe className="right-0" />
+    <section className="py-20 bg-white overflow-hidden  relative">
+      <div className=" max-w-xl size-full opacity-[.4] absolute top-0 left-[-10rem]">
+        <Globe className="right-0 " />
       </div>
       <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -43,7 +42,7 @@ export default function PartnerLogos() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 whitespace-nowrap">
+          <h2 className="text-3xl  md:text-4xl font-bold text-gray-900 mb-4 whitespace-nowrap">
             ĐỐI TÁC CHIẾN LƯỢC
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -52,15 +51,13 @@ export default function PartnerLogos() {
           </p>
         </motion.div>
 
-        {/* University Logos Row - Left to Right */}
+        {/* University Logos Row - Right to Left */}
         <div className="relative mb-8 z-[99]">
-          <Marquee className="[--duration:40s]">
+          <Marquee reverse className="[--duration:40s]">
             {universityLogos.map((logo, idx) => (
-              <Image
+              <img
                 key={idx}
                 src={logo}
-                width={112}
-                height={64}
                 className="h-16 w-28 object-contain"
                 alt={`University partner ${idx + 1}`}
               />
@@ -73,11 +70,9 @@ export default function PartnerLogos() {
         <div className="relative">
           <Marquee className="[--duration:40s]">
             {companyLogos.map((logo, idx) => (
-              <Image
+              <img
                 key={idx}
                 src={logo}
-                width={112}
-                height={64}
                 className="h-16 w-28 object-contain"
                 alt={`Company partner ${idx + 1}`}
               />
@@ -90,4 +85,3 @@ export default function PartnerLogos() {
     </section>
   );
 }
-

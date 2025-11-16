@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { AuroraText } from "@/components/ui/aurora-text";
+import ArrowButton from "../block/chevrons/arrow-button";
 
 const coreValuesData = [
   {
@@ -115,80 +116,74 @@ export default function CoreValues() {
               </div>
             </div>
           </motion.div>
-
-          {/* Right Side - Carousel */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            {/* Card Container - Wider to show 2 full cards */}
-            <div
-              className="relative overflow-hidden w-4xl"
-              onMouseEnter={() => setIsUserInteracting(true)}
-              onMouseLeave={() => setIsUserInteracting(false)}
+          <div className="relative flex items-center">
+            <ArrowButton
+              direction="left"
+              className="absolute left-[-5rem] z-[9]  top-1/2 !bg-white border-1 !border-gray-200 !text-gray-500 hover:!bg-gray-100 -translate-y-1/2 z-10"
+              onClick={prevSlide}
+            />
+            {/* Right Side - Carousel */}
+            <motion.div
+              className="relative "
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <motion.div
-                className="flex gap-6 py-4"
-                animate={{ x: -currentSlide * 420 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                }}
+              {/* Card Container - Wider to show 2 full cards */}
+              <div
+                className="relative overflow-hidden w-4xl"
+                onMouseEnter={() => setIsUserInteracting(true)}
+                onMouseLeave={() => setIsUserInteracting(false)}
               >
-                {/* Duplicate cards for infinity scroll */}
-                {[...coreValuesData, ...coreValuesData].map((value, index) => {
-                  const IconComponent = value.icon;
-                  return (
-                    <motion.div
-                      key={index}
-                      className="bg-white rounded-xl p-8 border-border border-1 transition-shadow duration-300 relative group min-h-[400px] w-[400px] flex-shrink-0"
-                      whileHover={{ y: -5 }}
-                    >
-                      {/* Icon in bottom right */}
-                      <div className="absolute bottom-4 right-4 opacity-10 overflow-hidden">
-                        <IconComponent className={`w-24 h-24 ${value.color}`} />
-                      </div>
+                <motion.div
+                  className="flex gap-6 py-4"
+                  animate={{ x: -currentSlide * 420 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                >
+                  {/* Duplicate cards for infinity scroll */}
+                  {[...coreValuesData, ...coreValuesData].map(
+                    (value, index) => {
+                      const IconComponent = value.icon;
+                      return (
+                        <motion.div
+                          key={index}
+                          className="bg-white rounded-xl p-8 border-border border-1 transition-shadow duration-300 relative group min-h-[400px] w-[400px] flex-shrink-0"
+                          whileHover={{ y: -5 }}
+                        >
+                          {/* Icon in bottom right */}
+                          <div className="absolute bottom-4 right-4 opacity-20 overflow-hidden">
+                            <IconComponent
+                              className={`w-24 h-24 ${value.color}`}
+                            />
+                          </div>
 
-                      <div className="relative z-10">
-                        <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                          {value.title}
-                        </h3>
-                        <h4 className="text-lg font-semibold text-blue-600 mb-4">
-                          {value.subtitle}
-                        </h4>
-                        <p className="text-base text-gray-700 leading-relaxed">
-                          {value.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
-
-            {/* Navigation Buttons */}
-            <div className="flex justify-center gap-4 mt-6">
-              <button
-                onClick={prevSlide}
-                className="bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-all duration-200"
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-700" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-all duration-200"
-              >
-                <ChevronRight className="w-6 h-6 text-gray-700" />
-              </button>
-            </div>
-          </motion.div>
+                          <div className="relative z-10">
+                            <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                              {value.title}
+                            </h3>
+                            <h4 className="text-lg font-semibold text-blue-600 mb-4">
+                              {value.subtitle}
+                            </h4>
+                            <p className="text-base text-gray-700 leading-relaxed">
+                              {value.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    }
+                  )}
+                </motion.div>
+              </div>
+              {/* Navigation Buttons */}
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
