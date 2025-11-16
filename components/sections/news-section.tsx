@@ -74,108 +74,114 @@ export default function NewsSection() {
     <section className="relative overflow-hidden ">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="border-1 relative h-[200px] lg:h-[500px] rounded-3xl overflow-hidden mt-20 lg:mt-48">
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="lg:mt-48  absolute flex justify-center lg:justify-end min-h-[600px] sm:min-h-[540px] w-full"
-          >
-            <div className="scale-[0.85] sm:scale-100 mt-12">
-              <CardSwap
-                width="min(600px, 88vw)"
-                height={320}
-                cardDistance={70}
-                verticalDistance={90}
-                delay={7000}
-                className="w-full max-w-[460px] sm:max-w-[320px]"
-              >
-                {spotlight.map((item) => (
-                  <Card
-                    key={item.id}
-                    customClass=" !border-gray-300 bg-white/50 overflow-hidden"
-                  >
-                    <div className="block h-full w-full">
-                      <div className="relative h-full w-full">
-                        <div className="flex flex-col h-full">
-                          <div className="pl-4 pt-4 bg-transparent backdrop-blur-md flex flex-col w-full">
-                            <h3 className="text-lg font-bold text-gray-600 leading-tight line-clamp-2 mb-2">
-                              {item.title}
-                            </h3>
-                          </div>
+          <div className="absolute inset-0 p-6 lg:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Left Side - Text Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="flex-1 flex flex-col justify-center text-center lg:text-left space-y-4 lg:space-y-6"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700 mx-auto lg:mx-0 w-fit">
+                <span className="inline-flex size-2 rounded-full bg-blue-600" />
+                Tin tức nổi bật của HCMUTE
+              </div>
 
-                          <div className="flex-1 relative">
-                            <Image
-                              src={item.image}
-                              alt={item.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, 420px"
-                            />
+              <h2 className="text-3xl sm:text-4xl lg:text-4xl xl:text-[46px] font-semibold leading-tight text-gray-900">
+                <span className="bg-gradient-to-r from-blue-700 via-violet-600 to-red-500 bg-clip-text text-transparent">
+                  TIN TỨC &amp; SỰ KIỆN
+                </span>
+              </h2>
+              
+              <p className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed mx-auto lg:mx-0">
+                <span className="font-semibold text-gray-800">
+                  Cập nhật nổi bật:
+                </span>{" "}
+                những diễn biến mới nhất về hoạt động đào tạo, nghiên cứu và kết
+                nối doanh nghiệp tại Trường Đại học Sư phạm Kỹ thuật TP.HCM.
+              </p>
+
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+                <div className="rounded-2xl border border-gray-200 bg-white p-4 lg:p-5 shadow-lg shadow-blue-100/60 text-left">
+                  <p className="text-xs font-semibold uppercase text-blue-700">
+                    Tổng số bài viết
+                  </p>
+                  <p className="mt-3 lg:mt-4 text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900">
+                    {newsItems.length.toLocaleString("vi-VN")}+
+                  </p>
+                  <p className="mt-2 text-xs lg:text-sm text-gray-500">
+                    Thư viện tin tức được cập nhật liên tục mỗi tuần.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-blue-600/10 via-purple-100 to-white p-4 lg:p-5 shadow-lg shadow-purple-100/60 text-left">
+                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-purple-700">
+                    Sự kiện sắp tới
+                  </p>
+                  <p className="mt-3 lg:mt-4 text-xl sm:text-2xl font-semibold text-gray-900">
+                    {
+                      newsItems.filter((item) => item.category === "Sự kiện")
+                        .length
+                    }{" "}
+                    sự kiện
+                  </p>
+                  <p className="mt-2 text-xs lg:text-sm text-gray-500">
+                    Tham gia các hội thảo, chương trình kết nối doanh nghiệp và sự
+                    kiện sinh viên.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Side - Featured News Cards */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="flex-1 relative flex items-center justify-center lg:justify-end"
+            >
+              <div className="scale-[0.85] sm:scale-100 mt-100">
+                <CardSwap
+                  width="min(600px, 88vw)"
+                  height={320}
+                  cardDistance={70}
+                  verticalDistance={90}
+                  delay={7000}
+                  className="w-full max-w-[460px] sm:max-w-[320px]"
+                >
+                  {spotlight.map((item) => (
+                    <Card
+                      key={item.id}
+                      customClass=" !border-gray-300 bg-white/50 overflow-hidden"
+                    >
+                      <div className="block h-full w-full">
+                        <div className="relative h-full w-full">
+                          <div className="flex flex-col h-full">
+                            <div className="pl-4 pt-4 bg-transparent backdrop-blur-md flex flex-col w-full">
+                              <h3 className="text-lg font-bold text-gray-600 leading-tight line-clamp-2 mb-2">
+                                {item.title}
+                              </h3>
+                            </div>
+
+                            <div className="flex-1 relative">
+                              <Image
+                                src={item.image}
+                                alt={item.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, 420px"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
-              </CardSwap>
-            </div>
-          </motion.div>
-          {/* <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center lg:text-left space-y-4"
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700">
-              <span className="inline-flex size-2 rounded-full bg-blue-600" />
-              Tin tức nổi bật của HCMUTE
-            </div>
-
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-4xl xl:text-[46px] font-semibold leading-tight text-gray-900">
-              <span className="bg-gradient-to-r from-blue-700 via-violet-600 to-red-500 bg-clip-text text-transparent">
-                TIN TỨC &amp; SỰ KIỆN
-              </span>
-            </h2>
-            <p className="mt-3 text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed mx-auto lg:mx-0">
-              <span className="font-semibold text-gray-800">
-                Cập nhật nổi bật:
-              </span>{" "}
-              những diễn biến mới nhất về hoạt động đào tạo, nghiên cứu và kết
-              nối doanh nghiệp tại Trường Đại học Sư phạm Kỹ thuật TP.HCM.
-            </p>
-
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-lg shadow-blue-100/60 text-left">
-                <p className="text-xs font-semibold uppercase   text-blue-700">
-                  Tổng số bài viết
-                </p>
-                <p className="mt-4 text-3xl sm:text-4xl font-semibold text-gray-900">
-                  {newsItems.length.toLocaleString("vi-VN")}+
-                </p>
-                <p className="mt-2 text-sm text-gray-500">
-                  Thư viện tin tức được cập nhật liên tục mỗi tuần.
-                </p>
+                    </Card>
+                  ))}
+                </CardSwap>
               </div>
-              <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-blue-600/10 via-purple-100 to-white p-5 shadow-lg shadow-purple-100/60 text-left">
-                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-purple-700">
-                  Sự kiện sắp tới
-                </p>
-                <p className="mt-4 text-xl sm:text-2xl font-semibold text-gray-900">
-                  {
-                    newsItems.filter((item) => item.category === "Sự kiện")
-                      .length
-                  }{" "}
-                  sự kiện
-                </p>
-                <p className="mt-2 text-sm text-gray-500">
-                  Tham gia các hội thảo, chương trình kết nối doanh nghiệp và sự
-                  kiện sinh viên.
-                </p>
-              </div>
-            </div>
-          </motion.div> */}
+            </motion.div>
+          </div>
         </div>
 
         <motion.div
