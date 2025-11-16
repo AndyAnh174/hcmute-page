@@ -43,7 +43,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = "Card";
 
-type CardRef = RefObject<HTMLDivElement>;
+type CardRef = RefObject<HTMLDivElement | null>;
 
 interface Slot {
   x: number;
@@ -105,7 +105,7 @@ const CardSwap = ({
 
   const order = useRef<number[]>(childArr.map((_, idx) => idx));
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const intervalRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -267,7 +267,7 @@ const CardSwap = ({
         child.props.onClick?.(event);
         onCardClick?.(idx);
       },
-    })
+    } as any)
   );
 
   const resolvedWidth = typeof width === "number" ? `${width}px` : width;
