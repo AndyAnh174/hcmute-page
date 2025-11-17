@@ -32,42 +32,39 @@ interface NewsItem {
 const newsItems: NewsItem[] = [
   {
     id: 101,
-    title:
-      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    title: "HCMUTE ký kết hợp tác với Đại học Tokyo - Nhật Bản",
     excerpt:
-      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
-    date: "2025-11-13",
-    category: "Sự kiện",
+      "Chương trình hợp tác tạo cơ hội trao đổi sinh viên, giảng viên và phát triển các dự án nghiên cứu chung trong lĩnh vực kỹ thuật và công nghệ.",
+    date: "2024-01-15",
+    category: "Hợp tác quốc tế",
     image: "/news/hoi-thao-ute.jpg",
     readTime: "3 phút",
     views: 245,
-    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+    tags: ["hợp-tác", "quốc-tế", "tokyo"],
   },
   {
     id: 102,
-    title:
-      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    title: "Sinh viên HCMUTE đạt giải Nhất cuộc thi Robotics Việt Nam 2024",
     excerpt:
-      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
-    date: "2025-11-13",
-    category: "Sự kiện",
-    image: "/news/hoi-thao-ute.jpg",
-    readTime: "3 phút",
-    views: 245,
-    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+      "Đội thi của Khoa Cơ khí xuất sắc giành giải Nhất với dự án robot tự động phân loại rác thải thông minh.",
+    date: "2024-01-12",
+    category: "Thành tích sinh viên",
+    image: "/news/giai-nha-robot.jpeg",
+    readTime: "2 phút",
+    views: 189,
+    tags: ["robotics", "giải-thưởng", "sinh-viên"],
   },
   {
     id: 103,
-    title:
-      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    title: "Hội thảo quốc tế về AI và IoT trong giáo dục kỹ thuật",
     excerpt:
-      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
-    date: "2025-11-13",
+      "Sự kiện quy tụ hơn 200 chuyên gia trong nước và quốc tế thảo luận về xu hướng ứng dụng công nghệ trong đào tạo kỹ thuật.",
+    date: "2024-01-10",
     category: "Sự kiện",
-    image: "/news/hoi-thao-ute.jpg",
-    readTime: "3 phút",
-    views: 245,
-    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+    image: "/news/vina-ute.png",
+    readTime: "4 phút",
+    views: 312,
+    tags: ["ai", "iot", "giáo-dục"],
   },
 ];
 
