@@ -42,7 +42,7 @@ export default function UniversityLeadership() {
 
   return (
     <section className="py-20  relative">
-      <div className="max-w-7xl px-32 relative">
+      <div className="w-full  px-32 relative">
         {/* Header */}
         <motion.div
           className="text-center mb-12"
