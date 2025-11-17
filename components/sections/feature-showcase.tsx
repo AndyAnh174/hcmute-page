@@ -40,7 +40,7 @@ const featureData = [
     titleHighlight: "Khoa học",
     description:
       "Tạp chí Khoa học Giáo dục JTE uy tín hàng đầu Việt Nam. HCMUTE tiên phong trong việc ứng dụng và phát triển các công nghệ tiên tiến. Với các phòng thí nghiệm hiện đại, đội ngũ giảng viên giàu kinh nghiệm và các dự án nghiên cứu đột phá, chúng tôi đóng góp tích cực vào sự phát triển khoa học công nghệ của đất nước.",
-    imageUrl: "/carousel/1.jpg",
+    imageUrl: "/scroll/KHCN.jpg",
     tabLabel: "Tạp chí Khoa học Giáo dục JTE uy tín hàng đầu Việt Nam",
     tabColor: "from-[#0c4ebf] to-[#1760df]",
   },
@@ -50,7 +50,7 @@ const featureData = [
     titleHighlight: "Cộng đồng",
     description:
       "Hướng đến phát triển bền vững. HCMUTE tạo môi trường phát triển toàn diện cho sinh viên thông qua các hoạt động ngoại khóa phong phú. Từ các câu lạc bộ học thuật, thể thao, văn hóa nghệ thuật đến các chương trình tình nguyện, giao lưu quốc tế, sinh viên có nhiều cơ hội để phát triển kỹ năng mềm, mở rộng mạng lưới quan hệ.",
-    imageUrl: "/carousel/3.jpg",
+    imageUrl: "/scroll/pvcd.jpg",
     tabLabel: "Hướng đến phát triển bền vững",
     tabColor: "from-[#ae0303] to-[#1760df]",
   },

@@ -25,7 +25,7 @@ export const nghienCuuItems = [
   {
     title: "Dự án nghiên cứu",
     href: "/nghien-cuu/du-an",
-    description: "Các dự án nghiên cứu khoa học đang triển khai.",
+    description: "Các dự án học đang triển khai.",
   },
   {
     title: "Công bố khoa học",
