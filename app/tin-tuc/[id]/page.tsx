@@ -25,8 +25,8 @@ export default async function NewsDetailPage({ params }: PageProps) {
   const newsId = parseInt(id);
   const newsItem = getNewsItemById(newsId);
   const otherNews = newsItems.filter((item) => item.id !== newsId);
-  const recentPosts = otherNews.slice(0, 3);
-  const relatedPosts = otherNews.slice(0, 3);
+  const recentPosts = otherNews.slice(0, 4);
+  const relatedPosts = otherNews.slice(0, 5);
 
   if (!newsItem) {
     notFound();
@@ -65,7 +65,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
             <div className="max-w-4xl mx-auto">
               {/* Category Badge */}
               <div className="mb-4">
-                <span className="inline-flex items-center px-4 py-2 rounded-lg bg-white/95 backdrop-blur-sm text-sm font-semibold text-gray-800">
+                <span className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600/90 text-white text-sm font-semibold shadow-lg shadow-blue-600/30">
                   {newsItem.category}
                 </span>
               </div>
@@ -111,7 +111,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
                 {/* Main Content */}
                 <div
-                  className="news-content prose max-w-none text-gray-700 leading-relaxed prose-img:rounded-2xl prose-img:shadow-md"
+                  className="news-content prose max-w-none text-gray-700 leading-relaxed prose-img:rounded-2xl prose-img:shadow-md prose-figcaption:italic prose-figcaption:text-sm prose-figcaption:text-gray-600 prose-figcaption:text-center"
                   dangerouslySetInnerHTML={{
                     __html: newsItem.content || newsItem.excerpt,
                   }}
@@ -151,7 +151,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
                         Xem thêm
                       </Link>
                     </div>
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                       {relatedPosts.map((item) => (
                         <Link
                           key={item.id}
@@ -197,20 +197,23 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
               {/* Sidebar */}
               <aside className="space-y-6 lg:sticky lg:top-28 self-start">
-                <div className="rounded-3xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
+                <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-4 border-b border-gray-200 pb-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-                        Recent posts
+                        Tin mới
                       </p>
                       <p className="text-xs text-gray-500">
                         Cập nhật hoạt động mới nhất
                       </p>
                     </div>
-                    <div className="inline-flex items-center gap-1 text-blue-600 text-sm font-medium">
-                      <span>See all</span>
+                    <Link
+                      href="/"
+                      className="inline-flex items-center gap-1 text-blue-600 text-sm font-medium hover:text-blue-700"
+                    >
+                      <span>Xem tất cả</span>
                       <ArrowLeft className="w-4 h-4 rotate-180" />
-                    </div>
+                    </Link>
                   </div>
                   <div className="space-y-5">
                     {recentPosts.map((item) => (

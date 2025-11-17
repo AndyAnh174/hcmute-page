@@ -201,6 +201,62 @@ export const newsItems: NewsItem[] = [
     tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
     content: icmt2025Content,
   },
+  {
+    id: 104,
+    title:
+      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    excerpt:
+      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
+    date: "2025-11-13",
+    category: "Sự kiện",
+    image: "/news/hoi-thao-ute.jpg",
+    readTime: "3 phút",
+    views: 245,
+    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+    content: icmt2025Content,
+  },
+  {
+    id: 105,
+    title:
+      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    excerpt:
+      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
+    date: "2025-11-13",
+    category: "Sự kiện",
+    image: "/news/hoi-thao-ute.jpg",
+    readTime: "3 phút",
+    views: 245,
+    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+    content: icmt2025Content,
+  },
+  {
+    id: 106,
+    title:
+      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    excerpt:
+      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
+    date: "2025-11-13",
+    category: "Sự kiện",
+    image: "/news/hoi-thao-ute.jpg",
+    readTime: "3 phút",
+    views: 245,
+    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+    content: icmt2025Content,
+  },
+  {
+    id: 107,
+    title:
+      "HOẠT ĐỘNG HỌC TẬP VÀ NCKH HCMUTE tổ chức Hội thảo Quốc tế về Công nghệ Cơ – Điện tử (ICMT 2025)",
+    excerpt:
+      "Diễn đàn học thuật kết nối tri thức toàn cầu Vào ngày 13 tháng 11 năm 2025, Trường Đại học Sư phạm",
+    date: "2025-11-13",
+    category: "Sự kiện",
+    image: "/news/hoi-thao-ute.jpg",
+    readTime: "3 phút",
+    views: 245,
+    tags: ["ICMT-2025", "cơ-điện-tử", "hội-thảo"],
+    content: icmt2025Content,
+  },
 ];
 
 export function getNewsItemById(id: number): NewsItem | undefined {

@@ -17,37 +17,37 @@ const TIMELINE_EVENTS: TimelineEvent[] = [
   {
     yearRange: "1962 - 1974",
     title: "Khai Sinh",
-    description: "Ra đời từ Ban Cao đẳng Sư phạm Kỹ thuật",
+    description: "Ra đời từ Ban Cao đẳng Sư phạm Kỹ thuật, năm 1974 Trường được nâng cấp thành Trường đại học Giáo dục Thủ Đức, bước đầu đào tạo nhân lực kỹ thuật cho nước.",
     videoUrl: "https://www.youtube.com/embed/sQH0-tBvyY4",
   },
   {
     yearRange: "1974 - 1984",
     title: "Định Hình",
-    description: "Chính thức mang tên Trường Đại học Sư phạm Kỹ thuật",
+    description: "Chính thức mang tên Trường Đại học Sư phạm Kỹ thuật Thủ Đức, khẳng định vị thế giáo dục kỹ thuật quốc gia.",
   },
   {
     yearRange: "1984 - 1995",
     title: "Hợp Nhất & Mở Rộng",
     description:
-      "Sáp nhập Trường Trung học Công nghiệp Thủ Đức và Trường Sư phạm Kỹ thuật 5, tạo nền tảng cho quá trình phát triển ngành.",
+      "Sáp nhập Trường Trung học Công nghiệp Thủ Đức và Trường Sư phạm Kỹ thuật 5, tăng cường quy mô và chuyên ngành. Từ đó chính thức mang tên Trường Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh.",
   },
   {
     yearRange: "1995 - 2000",
     title: "Thành viên ĐH QG TP. HCM",
     description:
-      "Trở thành thành viên Đại học Quốc gia TP. Hồ Chí Minh, nâng cao mục đích hội nhập và hợp tác.",
+      "Trở thành thành viên Đại học Quốc gia TP. Hồ Chí Minh, nâng cao mức độ hội nhập và hợp tác.",
   },
   {
     yearRange: "2000 - 2/2025",
     title: "Phát triển vượt bậc",
     description:
-      "Trực thuộc Bộ GD&ĐT, phát triển thành cơ sở giáo dục trong điểm, dấn đặt kỹ thuật và công nghệ và đổi mới sáng tạo.",
+      "Trực thuộc Bộ GD&ĐT, được quy hoạch là trường trọng điểm quốc gia về công nghệ kỹ thuật.",
   },
   {
     yearRange: "2/2025 - nay",
     title: "Khẳng định vị thế",
     description:
-      "Là 1 trong 5 cơ sở giáo dục đại học trong điểm về kỹ thuật và công nghệ theo quy hoạch mạng lưới CSGD của Thủ tướng Chính phủ.",
+      "Là Cơ sở giáo dục đại học trọng điểm về kỹ thuật và công nghệ theo quy hoạch mạng lưới CSGD của Thủ tướng chính phủ; Được giao nhiệm vụ dẫn dắt mạng lưới Trung tâm đào tạo xuất sắc và tài năng về công nghệ 4.0, lĩnh vực Năng lượng tái tạo và Hydrogen.",
     videoUrl: "https://www.youtube.com/embed/sQH0-tBvyY4",
   },
 ];
