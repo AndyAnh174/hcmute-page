@@ -113,7 +113,7 @@ export default function FeatureShowcase() {
   return (
     <section className="relative px-32 w-full bg-white py-10">
       <div ref={containerRef} className="max-w-[1920px]">
-        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8">
           {/* Cột Phải - Image Display */}
           <div className="lg:col-span-6 relative">
             {/* Sticky Image */}
