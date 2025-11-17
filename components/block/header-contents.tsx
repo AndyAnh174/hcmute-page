@@ -99,7 +99,7 @@ export const NAVIGATION = {
                   "Danh mục học bổng khuyến khích học tập và hỗ trợ tài chính theo từng chương trình.",
               },
               {
-                title: "Hoạt động sinh viên",
+                title: "Phục vụ cộng đồng",
                 href: "/sinh-vien/hoat-dong",
                 description:
                   "Các câu lạc bộ, sự kiện và phong trào giúp sinh viên phát triển kỹ năng mềm.",

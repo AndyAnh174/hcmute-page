@@ -87,7 +87,7 @@ export default function CoreValues() {
 
   return (
     <section className="py-20 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7x px-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left Side - Fixed Text */}
           <motion.div
@@ -124,7 +124,7 @@ export default function CoreValues() {
             />
             {/* Right Side - Carousel */}
             <motion.div
-              className="relative "
+              className="relative"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -132,7 +132,7 @@ export default function CoreValues() {
             >
               {/* Card Container - Wider to show 2 full cards */}
               <div
-                className="relative overflow-hidden w-4xl"
+                className="relative  !z-[99]  overflow-hidden w-4xl"
                 onMouseEnter={() => setIsUserInteracting(true)}
                 onMouseLeave={() => setIsUserInteracting(false)}
               >
@@ -152,7 +152,7 @@ export default function CoreValues() {
                       return (
                         <motion.div
                           key={index}
-                          className="bg-white rounded-xl p-8 border-border border-1 transition-shadow duration-300 relative group min-h-[400px] w-[400px] flex-shrink-0"
+                          className=" bg-white rounded-xl p-8 border-border border-1 transition-shadow duration-300 relative group min-h-[400px] w-[400px] flex-shrink-0"
                           whileHover={{ y: -5 }}
                         >
                           {/* Icon in bottom right */}

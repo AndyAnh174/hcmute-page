@@ -33,7 +33,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
     <div className="flex min-h-screen flex-col">
       <Header />
       <HeaderSpacer />
-      
+
       <main className="flex-1">
         {/* Hero Section với ảnh */}
         <section className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
@@ -45,7 +45,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
-          
+
           {/* Back Button */}
           <div className="absolute top-4 left-4 z-10">
             <Link
@@ -95,7 +95,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
         {/* Content Section */}
         <section className="py-12 lg:py-16 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl px-32">
             {/* Excerpt */}
             <div className="mb-10 pb-6 border-b border-gray-200">
               <p className="text-xl text-gray-800 leading-relaxed font-medium italic">
@@ -106,14 +106,18 @@ export default async function NewsDetailPage({ params }: PageProps) {
             {/* Main Content */}
             <div
               className="news-content text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: newsItem.content || newsItem.excerpt }}
+              dangerouslySetInnerHTML={{
+                __html: newsItem.content || newsItem.excerpt,
+              }}
             />
 
             {/* Tags */}
             {newsItem.tags && newsItem.tags.length > 0 && (
               <div className="mt-12 pt-8 border-t border-gray-200">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-semibold text-gray-600 mr-2">Tags:</span>
+                  <span className="text-sm font-semibold text-gray-600 mr-2">
+                    Tags:
+                  </span>
                   {newsItem.tags.map((tag, index) => (
                     <span
                       key={index}
@@ -145,4 +149,3 @@ export default async function NewsDetailPage({ params }: PageProps) {
     </div>
   );
 }
-

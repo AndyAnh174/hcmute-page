@@ -83,8 +83,8 @@ export default function NewsSection() {
 
   return (
     <section className="relative overflow-hidden ">
-      <div className=" relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white  border-1 relative h-[200px] lg:h-[500px] rounded-3xl overflow-hidden mt-20 lg:mt-48">
+      <div className=" relative w-full px-32">
+        <div className="bg-white  border-1 relative h-[200px] lg:h-[500px] rounded-3xl overflow-hidden mt-20 lg:mt-12">
           <div className="absolute inset-0 p-6 lg:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Left Side - Text Content */}
             <motion.div
@@ -100,7 +100,10 @@ export default function NewsSection() {
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-4xl xl:text-[46px] font-semibold leading-tight text-gray-900">
-                <AuroraText className="text-3xl md:text-4xl font-bold text-gray-900  whitespace-nowrap">
+                <AuroraText
+                  colors={["#0c4ebfff", "#1760dfff", "#ae0303ff"]}
+                  className="text-3xl md:text-4xl font-bold text-gray-900  whitespace-nowrap"
+                >
                   TIN TỨC &amp; SỰ KIỆN
                 </AuroraText>
               </h2>
@@ -264,7 +267,7 @@ export default function NewsSection() {
                   </div>
 
                   {/* Hover Overlay - Xem chi tiết ở giữa */}
-                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20">
+                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-10">
                     <div className="flex flex-col items-center gap-3">
                       <div className="flex items-center gap-2 text-white text-lg font-semibold">
                         <span>Xem chi tiết</span>
@@ -279,17 +282,14 @@ export default function NewsSection() {
         </motion.div>
 
         <motion.div
-          className="mt-16 flex flex-wrap items-center justify-between gap-6 rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-6 shadow-sm"
+          className="mt-8 mb-8 flex flex-wrap items-center justify-between gap-6 rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-6 shadow-sm"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-gray-500">
-              Kho lưu trữ tin tức
-            </p>
-            <h3 className="mt-2 text-lg font-semibold text-gray-900">
+            <h3 className=" text-lg font-semibold text-gray-900">
               Khám phá toàn bộ tin tức, sự kiện và thông báo từ HCMUTE.
             </h3>
           </div>

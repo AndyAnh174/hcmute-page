@@ -59,7 +59,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-0  left-0 right-0 z-[9999]">
+    <nav className="fixed top-0  left-0 right-0 z-[100]">
       <div
         className={`transition-all  py-2 duration-300 ${
           isScrolled
@@ -67,7 +67,7 @@ export default function Navbar() {
             : "bg-white shadow-md border-b border-gray-200"
         }`}
       >
-        <div className="flex items-center justify-between h-16 relative">
+        <div className="flex items-center justify-between  h-16 relative">
           {/* Left Side Navigation */}
           <div className="flex justify-end items-center gap-4 w-full">
             <NavigationMenu>
@@ -125,20 +125,20 @@ export default function Navbar() {
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                       <Button className="rounded-full" variant="outline">
-                        Tiếng Việt <VN />
+                        <VN />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                      className="w-40 rounded-xl"
+                      className="!z-[999] rounded-xl"
                       align="end"
                       alignOffset={0}
                       sideOffset={5}
                     >
-                      <DropdownMenuItem>
-                        Tiếng Việt <VN />
+                      <DropdownMenuItem className="">
+                        <VN /> VI
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        English <GB />
+                      <DropdownMenuItem className="">
+                        <GB /> EN
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

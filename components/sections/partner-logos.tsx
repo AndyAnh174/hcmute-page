@@ -29,11 +29,11 @@ const companyLogos = [
 
 export default function PartnerLogos() {
   return (
-    <section className="py-20 bg-white overflow-hidden  relative">
-      <div className=" max-w-xl size-full opacity-[.4] absolute top-0 left-[-10rem]">
+    <section className="py-20 bg-white   relative">
+      <div className=" max-w-xl size-full opacity-[.4] absolute top-0   left-[-10rem]">
         <Globe className="right-0 " />
       </div>
-      <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
+      <div className="px-32 w-full">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
@@ -52,7 +52,7 @@ export default function PartnerLogos() {
         </motion.div>
 
         {/* University Logos Row - Right to Left */}
-        <div className="relative mb-8 z-[99]">
+        <div className="relative mb-8 z-[10]">
           <Marquee reverse className="[--duration:40s]">
             {universityLogos.map((logo, idx) => (
               <img

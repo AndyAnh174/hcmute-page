@@ -41,8 +41,8 @@ export default function UniversityLeadership() {
   const currentLeader = leadershipData[currentSlide];
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <section className="py-20  relative">
+      <div className="max-w-7xl px-32 relative">
         {/* Header */}
         <motion.div
           className="text-center mb-12"
@@ -99,22 +99,23 @@ export default function UniversityLeadership() {
               delay: 0.2,
             }}
           >
+            <div className="absolute inset-0 w-full h-full to-transparent"></div>
             <Image
               src={AGENT_BACKGROUND}
               alt="Agent Background"
               fill
-              className="rotate-[0deg] scale-[1.5] object-cover"
+              className="rotate-[0deg] scale-[1] object-cover"
             />
           </motion.div>
 
           {/* Content overlay */}
           <div className="relative rounded-2xl z-10 h-full flex items-center">
-            <div className="px-4 sm:px-6 lg:px-8">
+            <div className="px-32">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center pt-8 pb-12 lg:py-0">
                 {/* Left side - Text */}
                 <motion.div
                   key={currentSlide}
-                  className="text-white ml-0 lg:ml-24 order-2 lg:order-1"
+                  className="text-white ml-0 order-2 lg:order-1"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}

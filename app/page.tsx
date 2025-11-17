@@ -21,10 +21,10 @@ export default function Home() {
       <CoreValues />
       <VideoIntroduction />
       <UniversityLeadership />
+      <FeatureShowcase />
       <UnitsSection />
       <PartnerLogos />
       <NewsSection />
-      <FeatureShowcase />
       <Footer />
     </div>
   );

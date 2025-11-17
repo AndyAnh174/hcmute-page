@@ -19,7 +19,7 @@ const ArrowButton = ({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`border-1 border-white/20 cursor-pointer bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200 ${className}`}
+      className={`border-1 z-[9]  border-white/20 cursor-pointer bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200 ${className}`}
     >
       {direction === "right" ? (
         <ChevronRight className="w-6 h-6" />

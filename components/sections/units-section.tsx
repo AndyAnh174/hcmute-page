@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { MagicCard } from "@/components/ui/magic-card";
 import { NumberTicker } from "@/components/ui/number-ticker";
+import ArrowButton from "@/components/block/chevrons/arrow-button";
 
 interface Unit {
   name: string;
@@ -110,7 +117,8 @@ const UNIT_GROUPS: UnitGroup[] = [
       },
       {
         name: "Phòng Hợp tác và Phát triển Đào tạo",
-        description: "Hợp tác đào tạo, phát triển chương trình và liên kết giáo dục.",
+        description:
+          "Hợp tác đào tạo, phát triển chương trình và liên kết giáo dục.",
         href: "/phong/hop-tac-phat-trien-dao-tao",
         initials: "HTDT",
       },
@@ -146,7 +154,8 @@ const UNIT_GROUPS: UnitGroup[] = [
       },
       {
         name: "Phòng Quan hệ Quốc tế",
-        description: "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
+        description:
+          "Quan hệ đối ngoại, trao đổi sinh viên và hợp tác quốc tế.",
         href: "/phong/quan-he-quoc-te",
         initials: "QHQT",
       },
@@ -223,7 +232,8 @@ const UNIT_GROUPS: UnitGroup[] = [
       },
       {
         name: "Trung tâm Ngoại ngữ",
-        description: "Đào tạo ngoại ngữ, chứng chỉ quốc tế và giao lưu văn hóa.",
+        description:
+          "Đào tạo ngoại ngữ, chứng chỉ quốc tế và giao lưu văn hóa.",
         href: "/trung-tam/ngoai-ngu",
         initials: "NN",
       },
@@ -271,7 +281,8 @@ const UNIT_GROUPS: UnitGroup[] = [
       },
       {
         name: "Trung tâm Nghiên cứu và Chuyển giao Công nghệ",
-        description: "Nghiên cứu khoa học, chuyển giao công nghệ và đổi mới sáng tạo.",
+        description:
+          "Nghiên cứu khoa học, chuyển giao công nghệ và đổi mới sáng tạo.",
         href: "/trung-tam/nghien-cuu-chuyen-giao-cong-nghe",
         initials: "NCCG",
       },
@@ -342,13 +353,15 @@ const UNIT_GROUPS: UnitGroup[] = [
     items: [
       {
         name: "Đoàn Thanh niên",
-        description: "Tổ chức các hoạt động thanh niên, tình nguyện và phong trào.",
+        description:
+          "Tổ chức các hoạt động thanh niên, tình nguyện và phong trào.",
         href: "/doan-thanh-nien",
         initials: "YOUTH",
       },
       {
         name: "Hội Sinh viên",
-        description: "Đại diện quyền lợi sinh viên, tổ chức hoạt động và sự kiện.",
+        description:
+          "Đại diện quyền lợi sinh viên, tổ chức hoạt động và sự kiện.",
         href: "/hoi-sinh-vien",
         initials: "SVU",
       },
@@ -392,11 +405,90 @@ const itemVariants = {
 
 export default function UnitsSection() {
   const [selectedGroup, setSelectedGroup] = useState<UnitGroup | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging || !containerRef.current) return;
+
+    const container = containerRef.current;
+    const rect = container.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const percentage = Math.max(0, Math.min(1, x / rect.width));
+    const index = Math.round(percentage * (UNIT_GROUPS.length - 1));
+    setActiveTab(index);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        handleDragMove(e.clientX);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isDragging && e.touches[0]) {
+        handleDragMove(e.touches[0].clientX);
+      }
+    };
+
+    const handleUp = () => {
+      if (isDragging) {
+        handleDragEnd();
+      }
+    };
+
+    if (isDragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleUp);
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener("touchend", handleUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleUp);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleUp);
+    };
+  }, [isDragging]);
+
+  useEffect(() => {
+    if (!carouselApi) {
+      return;
+    }
+
+    const updateScrollState = () => {
+      setCanScrollPrev(carouselApi.canScrollPrev());
+      setCanScrollNext(carouselApi.canScrollNext());
+    };
+
+    updateScrollState();
+    carouselApi.on("select", updateScrollState);
+    carouselApi.on("reInit", updateScrollState);
+
+    return () => {
+      carouselApi.off("select", updateScrollState);
+      carouselApi.off("reInit", updateScrollState);
+    };
+  }, [carouselApi]);
 
   return (
     <>
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-32">
           <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -404,7 +496,7 @@ export default function UnitsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl text-start font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl text-center md:text-4xl  font-bold text-gray-900 mb-4">
               <AuroraText
                 className="px-2"
                 colors={["#0c4ebfff", "#1760dfff", "#ae0303ff"]}
@@ -412,13 +504,55 @@ export default function UnitsSection() {
                 ĐƠN VỊ HCMUTE
               </AuroraText>
             </h2>
-            <p className="text-lg text-gray-600 text-start">
-              Khám phá các khoa, viện, phòng ban, trung tâm và tổ chức đoàn thể tại HCMUTE
-            </p>
+            {/* Tab Navigation */}
+            <div className="flex justify-center mt-8">
+              <div
+                ref={containerRef}
+                className="relative inline-flex items-center gap-0 bg-gray-100 rounded-3xl px-1 py-1 cursor-pointer select-none w-full max-w-3xl"
+                onMouseDown={handleDragStart}
+                onTouchStart={handleDragStart}
+              >
+                {/* Sliding indicator */}
+                <motion.div
+                  className="absolute bg-white rounded-3xl shadow-md"
+                  style={{
+                    height: "calc(100% - 8px)",
+                    top: "4px",
+                    width: `calc((100% - 8px) / ${UNIT_GROUPS.length})`,
+                  }}
+                  initial={false}
+                  animate={{
+                    left: `calc(${activeTab} * ((100% - 8px) / ${UNIT_GROUPS.length}) + 4px)`,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                />
+
+                {UNIT_GROUPS.map((group, index) => (
+                  <button
+                    key={group.title}
+                    onClick={() => {
+                      setActiveTab(index);
+                    }}
+                    className={`relative z-10 px-4 py-2 text-sm transition-all duration-200 flex items-center justify-center flex-1 whitespace-nowrap ${
+                      activeTab === index
+                        ? "text-gray-900 font-bold"
+                        : "text-gray-600 hover:text-gray-900 font-normal"
+                    }`}
+                  >
+                    {group.title}
+                  </button>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          {/* Summary Cards - 4 cards showing counts */}
+          {/* <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -427,8 +561,11 @@ export default function UnitsSection() {
             {UNIT_GROUPS.map((group, index) => (
               <motion.div
                 key={group.title}
+                id={`group-${index}`}
                 variants={itemVariants}
-                onClick={() => setSelectedGroup(group)}
+                onClick={() => {
+                  setActiveTab(index);
+                }}
                 className="cursor-pointer group"
               >
                 <MagicCard
@@ -449,7 +586,75 @@ export default function UnitsSection() {
                 </MagicCard>
               </motion.div>
             ))}
-          </motion.div>
+          </motion.div> */}
+
+          {/* Carousel for Items */}
+          <div className="mt-8 flex justify-between  relative">
+            {canScrollPrev && (
+              <div className="flex items-center pr-4">
+                <button
+                  className={`bg-white hover:bg-gray-100 shadow-md rounded-full p-3 shadow-lg transition-bg duration-200`}
+                  onClick={() => carouselApi?.scrollPrev()}
+                >
+                  <ChevronLeft className="w-6 h-6 text-gray-600" />
+                </button>
+              </div>
+            )}
+
+            <Carousel
+              key={activeTab} // Re-render carousel when tab changes
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+              setApi={setCarouselApi}
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {UNIT_GROUPS[activeTab]?.items.map((unit, index) => (
+                  <CarouselItem
+                    key={unit.name}
+                    className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  >
+                    <Link href={unit.href}>
+                      <div className="relative h-48 rounded-2xl overflow-hidden group cursor-pointer">
+                        {/* Placeholder image - bạn có thể thay bằng hình ảnh thực tế */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-6xl font-bold text-white/20">
+                              {unit.initials}
+                            </span>
+                          </div>
+                        </div>
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        {/* Content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <h3 className="text-white  !text-md text-nowrap text-ellipsis font-bold text-lg mb-1 line-clamp-2 group-hover:underline">
+                            {unit.name}
+                          </h3>
+                          <p className="text-white/90 text-sm line-clamp-2">
+                            {unit.description}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+
+            {canScrollNext && (
+              <div className="flex items-center pl-4">
+                <button
+                  className={`bg-white hover:bg-gray-100 shadow-md rounded-full p-3 shadow-lg transition-bg duration-200`}
+                  onClick={() => carouselApi?.scrollNext()}
+                >
+                  <ChevronRight className="w-6 h-6 text-gray-600" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

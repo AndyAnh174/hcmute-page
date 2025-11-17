@@ -99,7 +99,7 @@ export default function HeroCarousel() {
 
           {/* Content */}
           <div className="relative z-10 h-full flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="max-w-7xl px-32 w-full">
               <div className="max-w-3xl">
                 <motion.div
                   initial={{ y: 30, opacity: 0 }}
@@ -168,7 +168,7 @@ export default function HeroCarousel() {
       />
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[10] flex space-x-3">
         {slides.map((_, index) => (
           <button
             key={index}
