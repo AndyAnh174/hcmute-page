@@ -11,6 +11,7 @@ interface TimelineEvent {
   title: string;
   description: string;
   videoUrl?: string;
+  imageUrl?: string;
 }
 
 const TIMELINE_EVENTS: TimelineEvent[] = [
@@ -18,30 +19,34 @@ const TIMELINE_EVENTS: TimelineEvent[] = [
     yearRange: "1962 - 1974",
     title: "Khai Sinh",
     description: "Ra đời từ Ban Cao đẳng Sư phạm Kỹ thuật, năm 1974 Trường được nâng cấp thành Trường đại học Giáo dục Thủ Đức, bước đầu đào tạo nhân lực kỹ thuật cho nước.",
-    videoUrl: "https://www.youtube.com/embed/sQH0-tBvyY4",
+    imageUrl: "/assets/1962.png",
   },
   {
     yearRange: "1974 - 1984",
     title: "Định Hình",
     description: "Chính thức mang tên Trường Đại học Sư phạm Kỹ thuật Thủ Đức, khẳng định vị thế giáo dục kỹ thuật quốc gia.",
+    imageUrl: "/assets/1974.png",
   },
   {
     yearRange: "1984 - 1995",
     title: "Hợp Nhất & Mở Rộng",
     description:
       "Sáp nhập Trường Trung học Công nghiệp Thủ Đức và Trường Sư phạm Kỹ thuật 5, tăng cường quy mô và chuyên ngành. Từ đó chính thức mang tên Trường Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh.",
+    imageUrl: "/assets/1984.png",
   },
   {
     yearRange: "1995 - 2000",
     title: "Thành viên ĐH QG TP. HCM",
-    description:
+    description:  
       "Trở thành thành viên Đại học Quốc gia TP. Hồ Chí Minh, nâng cao mức độ hội nhập và hợp tác.",
+    imageUrl: "/assets/1995.png",
   },
   {
     yearRange: "2000 - 2/2025",
     title: "Phát triển vượt bậc",
     description:
       "Trực thuộc Bộ GD&ĐT, được quy hoạch là trường trọng điểm quốc gia về công nghệ kỹ thuật.",
+    imageUrl: "/assets/2000.png",
   },
   {
     yearRange: "2/2025 - nay",
@@ -213,7 +218,7 @@ export default function VideoIntroduction() {
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left side - YouTube Video */}
+          {/* Left side - Video or Image */}
           <motion.div
             className="relative"
             initial={{ opacity: 0, x: -50 }}
@@ -233,6 +238,12 @@ export default function VideoIntroduction() {
                     allowFullScreen
                     className="rounded-2xl"
                   ></iframe>
+                ) : activeEvent.imageUrl ? (
+                  <img
+                    src={activeEvent.imageUrl}
+                    alt={`HCMUTE ${activeEvent.yearRange} - ${activeEvent.title}`}
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 flex items-center justify-center rounded-2xl">
                     <div className="text-center text-white p-8">
