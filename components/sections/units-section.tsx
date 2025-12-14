@@ -590,19 +590,16 @@ export default function UnitsSection() {
 
           {/* Carousel for Items */}
           <div className="mt-8 flex justify-between  relative">
-            <div className="flex items-center pr-4">
-              <button
-                className={`bg-white rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center ${
-                  canScrollPrev
-                    ? "hover:bg-gray-100 cursor-pointer"
-                    : "opacity-0 cursor-default pointer-events-none"
-                }`}
-                onClick={() => canScrollPrev && carouselApi?.scrollPrev()}
-                disabled={!canScrollPrev}
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-600" />
-              </button>
-            </div>
+            {canScrollPrev && (
+              <div className="flex items-center pr-4">
+                <button
+                  className={`bg-white hover:bg-gray-100 rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center`}
+                  onClick={() => carouselApi?.scrollPrev()}
+                >
+                  <ChevronLeft className="w-6 h-6 text-gray-600" />
+                </button>
+              </div>
+            )}
 
             <Carousel
               key={activeTab} // Re-render carousel when tab changes
@@ -647,19 +644,16 @@ export default function UnitsSection() {
               </CarouselContent>
             </Carousel>
 
-            <div className="flex items-center pl-4">
-              <button
-                className={`bg-white rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center ${
-                  canScrollNext
-                    ? "hover:bg-gray-100 cursor-pointer"
-                    : "opacity-0 cursor-default pointer-events-none"
-                }`}
-                onClick={() => canScrollNext && carouselApi?.scrollNext()}
-                disabled={!canScrollNext}
-              >
-                <ChevronRight className="w-6 h-6 text-gray-600" />
-              </button>
-            </div>
+            {canScrollNext && (
+              <div className="flex items-center pl-4">
+                <button
+                  className={`bg-white hover:bg-gray-100 rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center`}
+                  onClick={() => carouselApi?.scrollNext()}
+                >
+                  <ChevronRight className="w-6 h-6 text-gray-600" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
