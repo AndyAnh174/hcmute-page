@@ -192,14 +192,14 @@ export default function NewsSection() {
           {newsItems.map((item, index) => (
             <Link key={item.id} href={`/tin-tuc/${item.id}`}>
               <motion.article
-                className="group relative overflow-hidden rounded-lg bg-white border border-gray-200 transition-all duration-500 hover:shadow-xl cursor-pointer aspect-square"
+                className="group relative rounded-3xl overflow-hidden bg-white border border-gray-200 transition-all duration-500 hover:shadow-xl cursor-pointer aspect-square"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 {/* Image Section - Full Card */}
-                <div className="relative h-full w-full overflow-hidden">
+                <div className="relative rounded-3xl h-full w-full overflow-hidden">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -210,7 +210,7 @@ export default function NewsSection() {
 
                   {/* Views Indicator - Top Right */}
                   {item.views && (
-                    <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-black/50 backdrop-blur-sm border border-white/20 z-10">
+                    <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1.5 rounded-3xl bg-black/50 backdrop-blur-sm border border-white/20 z-10">
                       <span className="text-xs font-medium text-white">
                         {item.views}
                       </span>
@@ -220,7 +220,7 @@ export default function NewsSection() {
 
                   {/* Category Badge - Top Left */}
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-white/95 backdrop-blur-sm text-xs font-semibold uppercase tracking-wider text-gray-800 border border-white/30 shadow-sm">
+                    <span className="inline-flex rounded-3xl items-center px-3 py-1.5 bg-white/95 backdrop-blur-sm text-xs font-semibold uppercase tracking-wider text-gray-800 border border-white/30 shadow-sm">
                       {item.category}
                     </span>
                   </div>
@@ -245,7 +245,7 @@ export default function NewsSection() {
                         {item.tags.slice(0, 2).map((tag, tagIndex) => (
                           <span
                             key={tagIndex}
-                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm text-xs font-medium text-white border border-white/30"
+                            className="inline-flex rounded-3xl items-center gap-1 px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm text-xs font-medium text-white border border-white/30"
                           >
                             <Hash className="w-2.5 h-2.5" />
                             {tag}
@@ -293,7 +293,7 @@ export default function NewsSection() {
               Khám phá toàn bộ tin tức, sự kiện và thông báo từ HCMUTE.
             </h3>
           </div>
-          <button className="inline-flex items-center gap-3 rounded-full border border-blue-300 bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:border-blue-400">
+          <button className="inline-flex items-center gap-3 rounded-full border border-blue-300 bg-blue-600 px-6 py-3 text-sm rounded-3xl text-white transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:border-blue-400">
             Xem tất cả tin tức
             <ArrowRight className="w-4 h-4" />
           </button>

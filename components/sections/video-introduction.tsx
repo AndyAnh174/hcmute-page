@@ -117,8 +117,8 @@ export default function VideoIntroduction() {
   }, [isDragging]);
 
   return (
-    <section className=" bg-white  h-auto">
-      <div className="absolute w-full h-full pointer-events-none">
+    <section className="bg-white h-auto relative">
+      <div className="absolute w-full pointer-events-none z-0" style={{ top: "20px", height: "calc(100% + 400px)" }}>
         <GridPattern
           squares={[
             [4, 4],

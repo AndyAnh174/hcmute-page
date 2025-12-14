@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Users,
   Globe,
@@ -10,7 +10,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { AuroraText } from "@/components/ui/aurora-text";
-import ArrowButton from "../block/chevrons/arrow-button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 const coreValuesData = [
   {
@@ -48,22 +53,26 @@ const coreValuesData = [
 ];
 
 export default function CoreValues() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
   const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const plugin = useRef(null);
 
-  // Auto slide functionality - pauses when user is interacting
+  // Auto slide functionality
   useEffect(() => {
+    if (!api) return;
+
     if (isUserInteracting) return;
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % coreValuesData.length);
+        if (!api) return;
+        api.scrollNext();
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [isUserInteracting]);
+  }, [api, isUserInteracting]);
 
   // Resume auto-play after user stops interacting
-  useEffect(() => {
+   useEffect(() => {
     if (isUserInteracting) {
       const timer = setTimeout(() => {
         setIsUserInteracting(false);
@@ -73,21 +82,10 @@ export default function CoreValues() {
     }
   }, [isUserInteracting]);
 
-  const nextSlide = () => {
-    setIsUserInteracting(true);
-    setCurrentSlide((prev) => (prev + 1) % coreValuesData.length);
-  };
-
-  const prevSlide = () => {
-    setIsUserInteracting(true);
-    setCurrentSlide(
-      (prev) => (prev - 1 + coreValuesData.length) % coreValuesData.length
-    );
-  };
 
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="max-w-7x px-32">
+    <section className="py-20 relative bg-white">
+      <div className="max-w-7x px-32 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left Side - Fixed Text */}
           <motion.div
@@ -116,74 +114,79 @@ export default function CoreValues() {
               </div>
             </div>
           </motion.div>
-          <div className="relative flex items-center">
-            <ArrowButton
-              direction="left"
-              className="absolute left-[-5rem] z-[9]  top-1/2 !bg-white border-1 !border-gray-200 !text-gray-500 hover:!bg-gray-100 -translate-y-1/2 z-10"
-              onClick={prevSlide}
-            />
-            {/* Right Side - Carousel */}
-            <motion.div
+          
+           {/* Right Side - Carousel */}
+           <motion.div
               className="relative"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {/* Card Container - Wider to show 2 full cards */}
-              <div
-                className="relative  !z-[99]  overflow-hidden w-4xl"
+            <div
                 onMouseEnter={() => setIsUserInteracting(true)}
                 onMouseLeave={() => setIsUserInteracting(false)}
-              >
-                <motion.div
-                  className="flex gap-6 py-4"
-                  animate={{ x: -currentSlide * 420 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                  }}
+                onTouchStart={() => setIsUserInteracting(true)} // For mobile touch
+            >
+                <Carousel
+                    setApi={setApi}
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    className="w-full max-w-2xl"
                 >
-                  {/* Duplicate cards for infinity scroll */}
-                  {[...coreValuesData, ...coreValuesData].map(
-                    (value, index) => {
-                      const IconComponent = value.icon;
-                      return (
-                        <motion.div
-                          key={index}
-                          className=" bg-white rounded-xl p-8 border-border border-1 transition-shadow duration-300 relative group min-h-[400px] w-[400px] flex-shrink-0"
-                          whileHover={{ y: -5 }}
-                        >
-                          {/* Icon in bottom right */}
-                          <div className="absolute bottom-4 right-4 opacity-20 overflow-hidden">
-                            <IconComponent
-                              className={`w-24 h-24 ${value.color}`}
-                            />
-                          </div>
+                    <CarouselContent className="-ml-4">
+                        {coreValuesData.map((value, index) => {
+                            const IconComponent = value.icon;
+                            return (
+                                <CarouselItem key={index} className="pl-4 basis-1/2">
+                                     <div className="h-full">
+                                         <div className="bg-white rounded-xl p-8 border-border border-1 transition-shadow duration-300 relative group min-h-[400px] h-full flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                                              {/* Icon in bottom right */}
+                                            <div className="absolute bottom-4 right-4 opacity-20 overflow-hidden">
+                                                <IconComponent
+                                                className={`w-24 h-24 ${value.color}`}
+                                                />
+                                            </div>
 
-                          <div className="relative z-10">
-                            <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                              {value.title}
-                            </h3>
-                            <h4 className="text-lg font-semibold text-blue-600 mb-4">
-                              {value.subtitle}
-                            </h4>
-                            <p className="text-base text-gray-700 leading-relaxed">
-                              {value.description}
-                            </p>
-                          </div>
-                        </motion.div>
-                      );
-                    }
-                  )}
-                </motion.div>
-              </div>
-              {/* Navigation Buttons */}
+                                            <div className="relative z-10">
+                                                <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                                                {value.title}
+                                                </h3>
+                                                <h4 className="text-lg font-semibold text-blue-600 mb-4">
+                                                {value.subtitle}
+                                                </h4>
+                                                <p className="text-base text-gray-700 leading-relaxed">
+                                                {value.description}
+                                                </p>
+                                            </div>
+                                         </div>
+                                     </div>
+                                </CarouselItem>
+                            )
+                        })}
+                    </CarouselContent>
+                     <div className="flex justify-end gap-4 mt-2">
+                         <button
+                           className="bg-white hover:bg-gray-100 rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center"
+                           onClick={() => api?.scrollPrev()}
+                         >
+                             <ChevronLeft className="w-6 h-6 text-gray-600" />
+                         </button>
+                         <button
+                           className="bg-white hover:bg-gray-100 rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center"
+                           onClick={() => api?.scrollNext()}
+                         >
+                             <ChevronRight className="w-6 h-6 text-gray-600" />
+                         </button>
+                     </div>
+                </Carousel>
+            </div>
             </motion.div>
-          </div>
         </div>
       </div>
     </section>
   );
 }
+

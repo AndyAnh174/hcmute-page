@@ -67,22 +67,16 @@ export default function UniversityLeadership() {
       {/* Main Content */}
       <div className="flex flex-col justify-end justify-center pt-16 relative">
         {/* Navigation Arrows - Top Left */}
-        <div className="absolute top-0 left-8 z-30 flex space-x-2">
+        <div className="absolute   top-0 left-32 z-30 flex space-x-2">
           <button
             onClick={prevSlide}
-            className={`bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-bg duration-200 ${
-              currentSlide === 0 ? "invisible" : "visible"
-            }`}
+            className="bg-white hover:bg-gray-100 rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center visible"
           >
             <ChevronLeft className="w-6 h-6 text-gray-700" />
           </button>
           <button
             onClick={nextSlide}
-            className={`bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-bg duration-200 ${
-              currentSlide === leadershipData.length - 1
-                ? "invisible"
-                : "visible"
-            }`}
+            className="bg-white hover:bg-gray-100 rounded-full p-3 border border-gray-200 shadow-md transition-all duration-200 flex items-center justify-center visible"
           >
             <ChevronRight className="w-6 h-6 text-gray-700" />
           </button>
@@ -90,6 +84,7 @@ export default function UniversityLeadership() {
 
         <div className="flex justify-center w-screen bg-blue-600 md:h-[360px] relative">
           <motion.div
+            key={currentSlide}
             className="absolute inset-0 w-full h-full object-cover"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}

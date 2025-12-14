@@ -30,6 +30,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import Link from "next/link";
 import { NAVIGATION, FEATURE_CONTENT } from "./header-contents";
 import {
   sinhVienItems,
@@ -87,11 +88,13 @@ export default function Navbar() {
 
           {/* Center Logo - Absolutely centered */}
           <div className="px-8">
-            <img
-              src={"/logo/square_logo.png"}
-              alt="HCMUTE Logo"
-              className="w-40 transition-transform duration-300 hover:scale-100 "
-            />
+            <Link href="/">
+              <img
+                src={"/logo/square_logo.png"}
+                alt="HCMUTE Logo"
+                className="w-40 transition-transform duration-300 hover:scale-100 "
+              />
+            </Link>
           </div>
 
           {/* Right Side Navigation */}
@@ -124,7 +127,7 @@ export default function Navbar() {
                   </NavigationMenuItem>
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
-                      <Button className="rounded-full" variant="outline">
+                      <Button className="rounded-full" size="icon" variant="outline">
                         <VN />
                       </Button>
                     </DropdownMenuTrigger>
@@ -142,6 +145,9 @@ export default function Navbar() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                  <Button variant="default" className="rounded-full bg-blue-700 hover:bg-blue-800 text-white shadow-md">
+                    <a href="/login">Đăng nhập</a>
+                  </Button>
                 </div>
               </NavigationMenuList>
             </NavigationMenu>
