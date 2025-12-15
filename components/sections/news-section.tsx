@@ -282,21 +282,27 @@ export default function NewsSection() {
         </motion.div>
 
         <motion.div
-          className="mt-8 mb-8 flex flex-wrap items-center justify-between gap-6 rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-6 shadow-sm"
+          className="mt-8 mb-8 flex flex-wrap items-center justify-between gap-6 rounded-3xl border border-gray-200 bg-white px-8 py-6 shadow-sm"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div>
-            <h3 className=" text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900">
               Khám phá toàn bộ tin tức, sự kiện và thông báo từ HCMUTE.
             </h3>
+            <p className="text-sm text-gray-500 mt-1">
+              Cập nhật những hoạt động mới nhất của trường
+            </p>
           </div>
-          <button className="inline-flex items-center gap-3 rounded-full border border-blue-300 bg-blue-600 px-6 py-3 text-sm rounded-3xl text-white transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:border-blue-400">
+          <Link
+            href="/tin-tuc"
+            className="inline-flex items-center gap-2 rounded-3xl border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md group"
+          >
             Xem tất cả tin tức
-            <ArrowRight className="w-4 h-4" />
-          </button>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ArrowButton from "../block/chevrons/arrow-button";
+import Image from "next/image";
 
 interface CarouselSlide {
   id: number;
@@ -78,33 +79,43 @@ export default function HeroCarousel() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-gray-900">
-      <AnimatePresence mode="wait">
+      {/* Single AnimatePresence for clean transitions */}
+      <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentSlide}
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <img
+          {/* Background Image with zoom */}
+          <motion.div
+            className="absolute inset-0"
+            initial={{ scale: 1.05 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.0, ease: "easeOut" }}
+          >
+            <Image
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              quality={90}
+              sizes="100vw"
             />
-            <div className="absolute inset-0 bg-black/40"></div>
-          </div>
+          </motion.div>
+          <div className="absolute inset-0 bg-black/40" />
 
           {/* Content */}
           <div className="relative z-10 h-full flex items-center">
             <div className="max-w-7xl px-32 w-full">
               <div className="max-w-3xl">
                 <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
                 >
                   <span className="inline-block px-4 py-2 bg-blue-600/90 text-white rounded-full text-sm font-medium mb-6">
                     {slides[currentSlide].subtitle}
@@ -113,27 +124,27 @@ export default function HeroCarousel() {
 
                 <motion.h1
                   className="text-4xl sm:text-5xl lg:text-5xl text-nowrap font-bold text-white mb-6 leading-tight"
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
                 >
                   {slides[currentSlide].title}
                 </motion.h1>
 
                 <motion.p
                   className="text-xl text-gray-200 mb-8 leading-relaxed max-w-2xl"
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.6 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
                 >
                   {slides[currentSlide].description}
                 </motion.p>
 
                 <motion.div
                   className="flex flex-col sm:flex-row gap-4"
-                  //   initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1, duration: 0.6 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
                 >
                   <Button
                     variant={"outline"}
@@ -154,7 +165,7 @@ export default function HeroCarousel() {
       <ArrowButton
         direction="left"
         className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20"
-        onClick={nextSlide}
+        onClick={prevSlide}
         onMouseEnter={() => setIsAutoPlay(false)}
         onMouseLeave={() => setIsAutoPlay(true)}
       />

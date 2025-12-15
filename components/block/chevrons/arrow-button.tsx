@@ -16,15 +16,16 @@ const ArrowButton = ({
 }) => {
   return (
     <button
+      type="button"
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`border-1 z-[9]  border-white/20 cursor-pointer bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200 ${className}`}
+      className={`border border-white/20 cursor-pointer select-none bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200 ${className}`}
     >
       {direction === "right" ? (
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-6 h-6 pointer-events-none" />
       ) : (
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-6 h-6 pointer-events-none" />
       )}
     </button>
   );
